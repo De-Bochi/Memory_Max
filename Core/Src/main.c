@@ -76,6 +76,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
+  uint32_t last_tick = 0;
 
   /* USER CODE END Init */
 
@@ -91,6 +92,7 @@ int main(void)
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
   ST7789_Init();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -222,8 +224,16 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 void IniciarJogo () {
+	bool menu = true;
 	ST7789_Fill_Color(BLACK);
-	ST7789_WriteString(0,0, "Jogo da memoria", Font_7x10, WHITE, BLACK);
+	ST7789_WriteString(0,0, "Jogo da Memória", Font_11x18, WHITE, BLACK);
+
+     while(menu){
+     ST7789_WriteString(40,30, "Iniciar jogo", Font_11x18, WHITE, BLACK);
+     ST7789_WriteString(70,30, "Recordes", Font_11x18, WHITE, BLACK);
+     ST7789_WriteString(100,30, "Configurações", Font_11x18, WHITE, BLACK);
+    }
+
 
 }
 /* USER CODE END 4 */
