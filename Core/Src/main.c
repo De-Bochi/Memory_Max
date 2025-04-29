@@ -102,6 +102,9 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+
+	  IniciarJogo();
   }
   /* USER CODE END 3 */
 }
@@ -223,15 +226,24 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void NavegadorCursor(bool jogo){
+	uint16_t seta = WHITE;
+	if(!jogo){
+	ST7789_DrawFilledRectangle(10, 38, 60, 6, WHITE);
+	ST7789_DrawFilledRectangle(170, 38, 60, 6, WHITE);
+	}
+}
 void IniciarJogo () {
 	bool menu = true;
 	ST7789_Fill_Color(BLACK);
-	ST7789_WriteString(0,0, "Jogo da Memória", Font_11x18, WHITE, BLACK);
+	ST7789_WriteString(0,0, "Matching Pairs", Font_16x26, WHITE, BLACK);
+	ST7789_WriteString(90,30, "Game", Font_16x26, WHITE, BLACK);
 
      while(menu){
-     ST7789_WriteString(40,30, "Iniciar jogo", Font_11x18, WHITE, BLACK);
-     ST7789_WriteString(70,30, "Recordes", Font_11x18, WHITE, BLACK);
-     ST7789_WriteString(100,30, "Configurações", Font_11x18, WHITE, BLACK);
+     ST7789_WriteString(40,70, "Iniciar jogo", Font_11x18, WHITE, BLACK);
+     ST7789_WriteString(40,100, "Recordes", Font_11x18, WHITE, BLACK);
+     ST7789_WriteString(40,130, "Configuracoes", Font_11x18, WHITE, BLACK);
+     NavegadorCursor(false);
     }
 
 
