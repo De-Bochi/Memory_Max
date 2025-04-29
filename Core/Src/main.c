@@ -76,8 +76,6 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  uint32_t last_tick = 0;
-
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -169,7 +167,7 @@ static void MX_SPI1_Init(void)
   hspi1.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -226,18 +224,37 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+uint16_t seta = WHITE;
+uint32_t last_tick = 0;
+
 void NavegadorCursor(bool jogo){
-	uint16_t seta = WHITE;
+	int x, y;
+	if ((HAL_GetTick()-last_tick)>500){
+		if(seta==WHITE)
+			{
+				seta=BLACK;
+			}
+		else if(seta==BLACK)
+			{
+			seta=WHITE;
+			}
+		last_tick=HAL_GetTick();
+	}
 	if(!jogo){
 	ST7789_DrawFilledRectangle(10, 38, 60, 6, WHITE);
 	ST7789_DrawFilledRectangle(170, 38, 60, 6, WHITE);
+	x=5;
+	y=79;
+	jogo=true;
 	}
+	ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, seta);
+	ST7789_DrawFilledRectangle(x, y-3, 25 , 6, seta);
 }
 void IniciarJogo () {
 	bool menu = true;
 	ST7789_Fill_Color(BLACK);
 	ST7789_WriteString(0,0, "Matching Pairs", Font_16x26, WHITE, BLACK);
-	ST7789_WriteString(90,30, "Game", Font_16x26, WHITE, BLACK);
+	ST7789_WriteString(88,30, "Game", Font_16x26, WHITE, BLACK);
 
      while(menu){
      ST7789_WriteString(40,70, "Iniciar jogo", Font_11x18, WHITE, BLACK);
