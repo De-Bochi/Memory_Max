@@ -311,6 +311,8 @@ static void MX_SPI1_Init(void);
 /* USER CODE BEGIN PFP */
 void IniciarJogo();
 void SelecionarCarta(char tabuleiro[4][4], uint8_t i, uint8_t j, uint8_t linhas, uint8_t colunas);
+void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t *linhaAtual, uint8_t *colunaAtual);
+void GerarParesAleatorios(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas);
 
 /* USER CODE END PFP */
 
@@ -500,17 +502,17 @@ void NavegadorCursor(bool jogo, char tabuleiro[4][4], uint8_t* linhaAtual, uint8
 		last_tick=HAL_GetTick();
 	}
 	if(jogo){
-		if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_RESET) { 
+		if (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9)) {
             (*colunaAtual)--;
         }
-	if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == GPIO_PIN_RESET) { 
-       (*linhaAtual)--;
+		if (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10)) {
+			(*linhaAtual)--;
         }
-	if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) == GPIO_PIN_RESET) { 
-		(*colunaAtual)++;
+		if (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11)) {
+			(*colunaAtual)++;
 		}
-	if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12) == GPIO_PIN_RESET) { 
-		(*linhaAtual)++;
+		if (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12)) {
+			(*linhaAtual)++;
 		}
 	}
 	else if(!jogo){
@@ -534,11 +536,11 @@ void IniciarJogo () {
      ST7789_WriteString(40,70, "Iniciar jogo", Font_11x18, WHITE, BLACK);
      ST7789_WriteString(40,100, "Recordes", Font_11x18, WHITE, BLACK);
      ST7789_WriteString(40,130, "Configuracoes", Font_11x18, WHITE, BLACK);
-     NavegadorCursor(false);
+     NavegadorCursor(false, 0, 0, 0, 0, 0);
     }
      char tabuleiro[4][4];
      GerarParesAleatorios(tabuleiro, linhas, colunas);
-     Jogo();
+     Jogo(tabuleiro, linhas, colunas, 0, 0);
 }
 void GerarParesAleatorios(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas){
 	char temp[linhas*colunas];
@@ -600,9 +602,34 @@ void VirarTodasCartas(uint8_t linhas, uint8_t colunas){
 uint8_t AtualizarRecorde(uint8_t recorde, uint8_t atual){
 	return recorde > atual ? atual : recorde;
 }
-void Jogo(){
+bool CompararPares(char a, char b){
+	return a==b;
+}
+void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t *linhaAtual, uint8_t *colunaAtual){
 	for(;;){
+		uint8_t totalDeCartasSelecionadas = 0;
+		GerarParesAleatorios(tabuleiro, linhas, colunas);
+		for(int i = 0; i < colunas; i++){
+			for(int j = 0; j < linhas; j++){
+				SelecionarCarta(tabuleiro, i, j, linhas, colunas);
+			}
+		}
+		HAL_Delay(1500);
+		VirarTodasCartas(linhas, colunas);
+		for(;;){
+			char cartasSelecionadas[3];
+			uint8_t ultimaPosicao[3] = {100, 100};
+			NavegadorCursor(true, tabuleiro, &linhaAtual, &colunaAtual, linhas, colunas);
+			if(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) && !HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) && linhaAtual != ultimaPosicao[0] && colunaAtual != ultimaPosicao[1]){
+				cartasSelecionadas[totalDeCartasSelecionadas%2];
+				totalDeCartasSelecionadas++;
+				ultimaPosicao[0] = linhaAtual;
+				ultimaPosicao[1] = colunaAtual;
+			}
+			if(totalDeCartasSelecionadas % 2 == 0){
 
+			}
+		}
 	}
 }
 /* USER CODE END 4 */
