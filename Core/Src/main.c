@@ -513,7 +513,7 @@ void NavegadorCursor(bool jogo, char tabuleiro[4][4], uint8_t* linhaAtual, uint8
 		(*linhaAtual)++;
 		}
 	}
-	if(!jogo){
+	else if(!jogo){
 	ST7789_DrawFilledRectangle(10, 38, 60, 6, WHITE);
 	ST7789_DrawFilledRectangle(170, 38, 60, 6, WHITE);
 	x=5;
@@ -525,6 +525,7 @@ void NavegadorCursor(bool jogo, char tabuleiro[4][4], uint8_t* linhaAtual, uint8
 }
 void IniciarJogo () {
 	bool menu = true;
+	uint8_t linhas, colunas, jogadores;
 	ST7789_Fill_Color(BLACK);
 	ST7789_WriteString(0,0, "Matching Pairs", Font_16x26, WHITE, BLACK);
 	ST7789_WriteString(88,30, "Game", Font_16x26, WHITE, BLACK);
@@ -535,8 +536,9 @@ void IniciarJogo () {
      ST7789_WriteString(40,130, "Configuracoes", Font_11x18, WHITE, BLACK);
      NavegadorCursor(false);
     }
-
-
+     char tabuleiro[4][4];
+     GerarParesAleatorios(tabuleiro, linhas, colunas);
+     Jogo();
 }
 void GerarParesAleatorios(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas){
 	char temp[linhas*colunas];
