@@ -432,7 +432,7 @@ static void MX_GPIO_Init(void)
 uint16_t seta = WHITE;
 uint32_t last_tick = 0;
 
-void NavegadorCursor(bool jogo){
+void NavegadorCursor(bool jogo, char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t* linhas, uint8_t* colunas){
 	int x, y;
 	if ((HAL_GetTick()-last_tick)>500){
 		if(seta==WHITE)
@@ -444,6 +444,20 @@ void NavegadorCursor(bool jogo){
 			seta=WHITE;
 			}
 		last_tick=HAL_GetTick();
+	}
+	if(jogo){
+		if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_RESET) { 
+            (*colunaAtual)--;
+        }
+	if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == GPIO_PIN_RESET) { 
+       (*linhaAtual)--;
+        }
+	if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) == GPIO_PIN_RESET) { 
+		(*colunaAtual)++;
+		}
+	if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12) == GPIO_PIN_RESET) { 
+		(*linhaAtual)++;
+		}
 	}
 	if(!jogo){
 	ST7789_DrawFilledRectangle(10, 38, 60, 6, WHITE);
