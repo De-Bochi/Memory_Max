@@ -25,6 +25,7 @@
 #include "st7789\st7789.h"
 #include "stdbool.h"
 #include "jogo.h"
+#include "stdlib.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -302,6 +303,7 @@ static const uint16_t fundocarta[][(50*50/2)]  = {
   0x4deb, 0x31f4, 0x14f5, 0xf0eb, 0x34ed, 0x18f6, 0x59f6, 0x18f6, 0xb3ec, 0x92f4, 0x76f5, 0x14ed, 0x51ec, 0xb7f5, 0x35f5, 0x92f4, 0x18f6, 0xf4f4, 0xf4f4, 0x55f5, 0x55f5, 0x14f5, 0xd3ec, 0xb6f5, 0xb3ec, 0xb3f4, 0xb7f5, 0xd3ec, 0x14f5, 0x55f5, 0x55f5, 0xf4f4, 0xf4f4, 0x18f6, 0x92ec, 0x35f5, 0xb7f5, 0x51ec, 0x14ed, 0x76f5, 0xb3f4, 0xb3ec, 0x18f6, 0x59f6, 0x18f6, 0x34ed, 0xd0eb, 0x14f5, 0x31f4, 0x4deb,
   0x4eeb, 0x14f5, 0x31ec, 0x8eeb, 0x18f6, 0xf7f5, 0x59f6, 0x18f6, 0x76ed, 0xb3f4, 0x96f5, 0x55ed, 0xf7f5, 0xf0eb, 0x39f6, 0x38f6, 0x8eeb, 0xd7f5, 0x59f6, 0x92ec, 0x14f5, 0x59f6, 0x55f5, 0x92ec, 0x18f6, 0x18f6, 0x92f4, 0x55f5, 0x59f6, 0x14f5, 0x92ec, 0x59f6, 0xd7f5, 0x8eeb, 0x38f6, 0x39f6, 0xefeb, 0xd7f5, 0x55ed, 0x96f5, 0xd3f4, 0x76ed, 0x18f6, 0x39f6, 0xd7f5, 0x18f6, 0x6eeb, 0x51ec, 0x14f5, 0x4eeb
 };
+uint8_t tentativas = 0, recorde = 255;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -311,9 +313,15 @@ static void MX_SPI1_Init(void);
 /* USER CODE BEGIN PFP */
 void IniciarJogo();
 void SelecionarCarta(char tabuleiro[4][4], uint8_t i, uint8_t j, uint8_t linhas, uint8_t colunas);
-void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t *linhaAtual, uint8_t *colunaAtual);
+void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAtual, uint8_t colunaAtual);
 void GerarParesAleatorios(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas);
-
+bool VerificaSeExisteCartaDisponivelLinha(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t colunas);
+bool VerificaSeExisteCartaDisponivelColuna(char tabuleiro[4][4],uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t linhas);
+void MoverParaProximaCartaLinha(char tabuleiro[4][4], uint8_t* colunaAtual, uint8_t* linhaAtual, uint8_t colunas, uint8_t sentido);
+void MoverParaLinhaComCarta(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t linhas, uint8_t colunas, uint8_t sentido);
+void MoverParaColunaComCarta(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t linhas, uint8_t colunas, uint8_t sentido);
+void MoverParaProximaCartaColuna(char tabuleiro[4][4], uint8_t* colunaAtual, uint8_t* linhaAtual, uint8_t linhas, uint8_t sentido);
+void AtualizarRecorde(uint8_t atual);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -488,7 +496,7 @@ static void MX_GPIO_Init(void)
 uint16_t seta = WHITE;
 uint32_t last_tick = 0;
 
-void NavegadorCursor(bool jogo, char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t* linhas, uint8_t* colunas){
+void NavegadorCursor(bool jogo, char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t linhas, uint8_t colunas){
 	int x, y;
 	if ((HAL_GetTick()-last_tick)>500){
 		if(seta==WHITE)
@@ -502,20 +510,45 @@ void NavegadorCursor(bool jogo, char tabuleiro[4][4], uint8_t* linhaAtual, uint8
 		last_tick=HAL_GetTick();
 	}
 	if(jogo){
-		if (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9)) {
-            (*colunaAtual)--;
+
+		if (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9)) { //esquerda
+			if(VerificaSeExisteCartaDisponivelLinha(tabuleiro, linhaAtual, colunaAtual, colunas)){
+				MoverParaProximaCartaLinha(tabuleiro, colunaAtual, linhaAtual, colunas, 0);
+			}
+            else{
+            	MoverParaLinhaComCarta(tabuleiro, linhaAtual, colunaAtual, linhas, colunas, 0);
+            }
         }
-		if (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10)) {
-			(*linhaAtual)--;
+
+		else if (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10)) { // baixo
+			if(VerificaSeExisteCartaDisponivelColuna(tabuleiro, linhaAtual, colunaAtual, linhas)){
+				MoverParaProximaCartaColuna(tabuleiro, colunaAtual, linhaAtual, linhas, 1);
+			}
+			else{
+				MoverParaColunaComCarta(tabuleiro, linhaAtual, colunaAtual, linhas, colunas, 1);
+			}
+
         }
-		if (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11)) {
-			(*colunaAtual)++;
+
+		else if (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11)) { //direita
+			if(VerificaSeExisteCartaDisponivelLinha(tabuleiro, linhaAtual, colunaAtual, colunas)){
+				MoverParaProximaCartaLinha(tabuleiro, colunaAtual, linhaAtual, colunas, 1);
+			}
+			else{
+			    MoverParaLinhaComCarta(tabuleiro, linhaAtual, colunaAtual, linhas, colunas, 1);
+			}
 		}
-		if (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12)) {
-			(*linhaAtual)++;
+
+		else if (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12)) { //cima
+			if(VerificaSeExisteCartaDisponivelColuna(tabuleiro, linhaAtual, colunaAtual, linhas)){
+				MoverParaProximaCartaColuna(tabuleiro, colunaAtual, linhaAtual, linhas, 0);
+			}
+			else{
+				MoverParaColunaComCarta(tabuleiro, linhaAtual, colunaAtual, linhas, colunas, 0);
+			}
 		}
 	}
-	else if(!jogo){
+	else{
 	ST7789_DrawFilledRectangle(10, 38, 60, 6, WHITE);
 	ST7789_DrawFilledRectangle(170, 38, 60, 6, WHITE);
 	x=5;
@@ -525,9 +558,68 @@ void NavegadorCursor(bool jogo, char tabuleiro[4][4], uint8_t* linhaAtual, uint8
 	ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, seta);
 	ST7789_DrawFilledRectangle(x, y-3, 25 , 6, seta);
 }
+
+bool VerificaSeExisteCartaDisponivelLinha(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t colunas){
+	for(int c = 0; c < colunas; c++){
+		if(tabuleiro[*linhaAtual][c] != '0' && c != *colunaAtual) return true;
+	}
+	return false;
+}
+
+void MoverParaProximaCartaLinha(char tabuleiro[4][4], uint8_t* colunaAtual, uint8_t* linhaAtual, uint8_t colunas, uint8_t sentido){ // 1 pra direita ou 0 pra esquerda
+	uint8_t original = *colunaAtual;
+	do{
+		if(sentido>0) *colunaAtual = (*colunaAtual + 1) % colunas;
+		else *colunaAtual = (*colunaAtual == 0) ? colunas - 1 : *colunaAtual - 1;
+	} while(tabuleiro[*linhaAtual][*colunaAtual] == '0' && *colunaAtual != original);
+}
+
+void MoverParaLinhaComCarta(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t linhas, uint8_t colunas, uint8_t sentido) { // 1 para baixo ou 0 para cima
+	uint8_t linhaOriginal = *linhaAtual;
+	do {
+		if(sentido > 0)*linhaAtual = (*linhaAtual + 1) % linhas;
+		else *linhaAtual = (*linhaAtual == 0) ? linhas - 1 : *linhaAtual - 1;
+	} while (!VerificaSeExisteCartaDisponivelLinha(tabuleiro, linhaAtual, colunaAtual, colunas) && *linhaAtual != linhaOriginal);
+	for (int c = 0; c < colunas; c++) {
+		if (tabuleiro[*linhaAtual][c] != '0') {
+			*colunaAtual = c;
+			break;
+		}
+	}
+}
+
+void MoverParaProximaCartaColuna(char tabuleiro[4][4], uint8_t* colunaAtual, uint8_t* linhaAtual, uint8_t linhas, uint8_t sentido){
+	uint8_t original = *linhaAtual;
+	do{
+		if(sentido > 0) *linhaAtual = (*linhaAtual + 1) % linhas;
+		else  *linhaAtual = (*linhaAtual == 0) ? linhas - 1 : *linhaAtual - 1;
+	} while(tabuleiro[*linhaAtual][*colunaAtual] == '0' && *linhaAtual != original);
+}
+
+void MoverParaColunaComCarta(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t linhas, uint8_t colunas, uint8_t sentido){
+	uint8_t original = *colunaAtual;
+	do {
+		if(sentido > 0) *colunaAtual = (*colunaAtual + 1) % colunas;
+		else *colunaAtual = (*colunaAtual == 0) ? colunas - 1 : *colunaAtual - 1;
+	} while (!VerificaSeExisteCartaDisponivelColuna(tabuleiro, linhaAtual, colunaAtual, linhas) && *colunaAtual != original);
+	for (int l = 0; l < linhas; l++) {
+			if (tabuleiro[l][*colunaAtual] != '0') {
+				*linhaAtual = l;
+				break;
+			}
+		}
+}
+
+bool VerificaSeExisteCartaDisponivelColuna(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t linhas){
+	for(int l = 0; l<linhas; l++){
+		if(tabuleiro[l][*colunaAtual] != '0') return true;
+	}
+	return false;
+}
+
 void IniciarJogo () {
 	bool menu = true;
-	uint8_t linhas, colunas, jogadores;
+	uint8_t linhas = 4, colunas = 4, jogadores = 1;
 	ST7789_Fill_Color(BLACK);
 	ST7789_WriteString(0,0, "Matching Pairs", Font_16x26, WHITE, BLACK);
 	ST7789_WriteString(88,30, "Game", Font_16x26, WHITE, BLACK);
@@ -539,9 +631,12 @@ void IniciarJogo () {
      NavegadorCursor(false, 0, 0, 0, 0, 0);
     }
      char tabuleiro[4][4];
+     tentativas = 0;
      GerarParesAleatorios(tabuleiro, linhas, colunas);
      Jogo(tabuleiro, linhas, colunas, 0, 0);
+     AtualizarRecorde(tentativas);
 }
+
 void GerarParesAleatorios(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas){
 	char temp[linhas*colunas];
 	for(int i = 0; i< linhas*colunas/2; i++){
@@ -562,6 +657,7 @@ void GerarParesAleatorios(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas)
 		}
 	}
 }
+
 void SelecionarCarta(char tabuleiro[4][4], uint8_t i, uint8_t j, uint8_t linhas, uint8_t colunas){
 	uint8_t x = 240/colunas * j, y = 240/linhas * i;
 	switch(tabuleiro[i][j]){
@@ -591,6 +687,7 @@ void SelecionarCarta(char tabuleiro[4][4], uint8_t i, uint8_t j, uint8_t linhas,
 		break;
 	}
 }
+
 void VirarTodasCartas(uint8_t linhas, uint8_t colunas){
 	uint8_t x = 240/colunas, y = 240/linhas;
 	for(int i = 0; i<linhas; i++){
@@ -599,16 +696,30 @@ void VirarTodasCartas(uint8_t linhas, uint8_t colunas){
 		}
 	}
 }
-uint8_t AtualizarRecorde(uint8_t recorde, uint8_t atual){
-	return recorde > atual ? atual : recorde;
+
+void AtualizarRecorde(uint8_t atual){
+	recorde = (recorde > atual) ? atual : recorde;
 }
+
 bool CompararPares(char a, char b){
 	return a==b;
 }
-void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t *linhaAtual, uint8_t *colunaAtual){
+
+void AtualizarTentativas(uint8_t *tentativas){
+	(*tentativas)++;
+}
+
+bool VerificaFimDeJogo(uint8_t acertos, uint8_t linhas, uint8_t colunas){
+	return acertos >= linhas*colunas;
+}
+
+void ExibirFimDeJogo(uint8_t numeroDeTentativasDaRodada, uint8_t recorde){
+
+}
+
+void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAtual, uint8_t colunaAtual){
 	for(;;){
-		uint8_t totalDeCartasSelecionadas = 0;
-		GerarParesAleatorios(tabuleiro, linhas, colunas);
+		uint8_t totalDeCartasSelecionadas = 0, acertos = 0, posicoesCartasSelecionadas[2][2];
 		for(int i = 0; i < colunas; i++){
 			for(int j = 0; j < linhas; j++){
 				SelecionarCarta(tabuleiro, i, j, linhas, colunas);
@@ -616,20 +727,34 @@ void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t *linhaA
 		}
 		HAL_Delay(1500);
 		VirarTodasCartas(linhas, colunas);
-		for(;;){
-			char cartasSelecionadas[3];
-			uint8_t ultimaPosicao[3] = {100, 100};
+		uint8_t ultimaPosicao[2] = {100, 100};
+		while(!VerificaFimDeJogo(acertos, linhas, colunas)){
 			NavegadorCursor(true, tabuleiro, &linhaAtual, &colunaAtual, linhas, colunas);
 			if(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) && !HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) && linhaAtual != ultimaPosicao[0] && colunaAtual != ultimaPosicao[1]){
-				cartasSelecionadas[totalDeCartasSelecionadas%2];
+				SelecionarCarta(tabuleiro, linhaAtual, colunaAtual, linhas, colunas);
+				posicoesCartasSelecionadas[totalDeCartasSelecionadas%2][0] = linhaAtual;
+				posicoesCartasSelecionadas[totalDeCartasSelecionadas%2][1] = colunaAtual;
 				totalDeCartasSelecionadas++;
 				ultimaPosicao[0] = linhaAtual;
 				ultimaPosicao[1] = colunaAtual;
-			}
-			if(totalDeCartasSelecionadas % 2 == 0){
-
+				if(totalDeCartasSelecionadas % 2 == 0){
+					AtualizarTentativas(&tentativas);
+					char carta1 = tabuleiro[posicoesCartasSelecionadas[0][0]][posicoesCartasSelecionadas[0][1]];
+					char carta2 = tabuleiro[posicoesCartasSelecionadas[1][0]][posicoesCartasSelecionadas[1][1]];
+					if(CompararPares(carta1, carta2)){
+						acertos++;
+						tabuleiro[posicoesCartasSelecionadas[0][0]][posicoesCartasSelecionadas[0][1]] = '0';
+						tabuleiro[posicoesCartasSelecionadas[1][0]][posicoesCartasSelecionadas[1][1]] = '0';
+					}
+					else{
+						HAL_Delay(1000);
+						ST7789_DrawImage(240/colunas*posicoesCartasSelecionadas[0][1], 240/linhas*posicoesCartasSelecionadas[0][0], 50, 50, (const uint16_t *)fundocarta);
+						ST7789_DrawImage(240/colunas*posicoesCartasSelecionadas[1][1], 240/linhas*posicoesCartasSelecionadas[1][0], 50, 50, (const uint16_t *)fundocarta);
+					}
+				}
 			}
 		}
+		//ganhou o jogo
 	}
 }
 /* USER CODE END 4 */
