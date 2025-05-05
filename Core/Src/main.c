@@ -714,7 +714,21 @@ bool VerificaFimDeJogo(uint8_t acertos, uint8_t linhas, uint8_t colunas){
 }
 
 void ExibirFimDeJogo(uint8_t numeroDeTentativasDaRodada, uint8_t recorde){
+    ST7789_Fill_Color(BLACK);
 
+    ST7789_WriteString(40, 20, "Fim de Jogo!", Font_11x18, WHITE, BLACK);
+	ST7789_WriteString(40, 50, "Tentativas:", Font_11x18, WHITE, BLACK);
+	ST7789_WriteString(40, 80, "Recorde:", Font_11x18, WHITE, BLACK);
+	ST7789_WriteString(40, 110, "Aperte qualquer botao", Font_11x18, WHITE, BLACK);
+	ST7789_WriteString(40, 140, "para reiniciar", Font_11x18, WHITE, BLACK);
+
+	char tentativasStr[3], recordeStr[3];
+	sprintf(tentativasStr, "%d", numeroDeTentativasDaRodada);
+	sprintf(recordeStr, "%d", recorde);
+	ST7789_WriteString(150, 50, tentativasStr, Font_11x18, WHITE, BLACK);
+	ST7789_WriteString(150, 80, recordeStr, Font_11x18, WHITE, BLACK);
+
+	while(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) && !HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) && !HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) && !HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12));
 }
 
 void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAtual, uint8_t colunaAtual){
