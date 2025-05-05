@@ -603,6 +603,9 @@ void NavegadorCursor(bool jogo, char tabuleiro[4][4], uint8_t* linhaAtual, uint8
 				HAL_Delay(150);
 			}
 		}
+		x = 240 / colunas * (*colunaAtual);
+        y = 240 / linhas * (*linhaAtual);
+        ST7789_DrawRectangle(x, y, x + 50, y + 50, BLACK);
 	}
 	else{
 	ST7789_DrawFilledRectangle(10, 38, 60, 6, WHITE);
@@ -849,22 +852,16 @@ bool VerificaFimDeJogo(uint8_t acertos, uint8_t linhas, uint8_t colunas){
 }
 
 void ExibirFimDeJogo(uint8_t numeroDeTentativasDaRodada, uint8_t recorde){
+	ST7789_Fill_Color(BLACK);
 	uint32_t startTime = HAL_GetTick(); 
-    uint8_t currentFrame = 0; 
 
     while ((HAL_GetTick() - startTime) < 5000) {
         ST7789_Fill_Color(BLACK);
-
-        if (currentFrame == 0) {
-            ST7789_DrawImage(60, 40, 50, 50, (const uint16_t *)minion1);
-        } else {
-            ST7789_DrawImage(60, 40, 50, 50, (const uint16_t *)minion2);
-        }
-
-        currentFrame = !currentFrame;
-
-        HAL_Delay(200);
-
+            ST7789_DrawImage(80,60, 50, 50, (const uint16_t *)minion1);
+			HAL_Delay(200);
+            ST7789_DrawImage(80, 60, 50, 50, (const uint16_t *)minion2);
+			HAL_Delay(200);
+	}
 
     ST7789_WriteString(40, 20, "Fim de Jogo!", Font_11x18, WHITE, BLACK);
 	ST7789_WriteString(40, 50, "Tentativas:", Font_11x18, WHITE, BLACK);
@@ -878,11 +875,11 @@ void ExibirFimDeJogo(uint8_t numeroDeTentativasDaRodada, uint8_t recorde){
 	ST7789_WriteString(150, 50, tentativasStr, Font_11x18, WHITE, BLACK);
 	ST7789_WriteString(150, 80, recordeStr, Font_11x18, WHITE, BLACK);
 
-	while(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) && !HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) && !HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) && !HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12));
+	while(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) || !HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) || !HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) || !HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12));
 
 
 }
-}
+
 
 void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAtual, uint8_t colunaAtual){
 	for(;;){
