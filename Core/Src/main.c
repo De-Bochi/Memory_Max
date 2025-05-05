@@ -496,36 +496,26 @@ static void MX_GPIO_Init(void)
 uint16_t seta = WHITE;
 uint32_t last_tick = 0;
 
-void NavegadorCursor(bool jogo, char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t linhas, uint8_t colunas){
-	int x, y;
-	if ((HAL_GetTick()-last_tick)>500){
-		if(seta==WHITE)
-			{
-				seta=BLACK;
-			}
-		else if(seta==BLACK)
-			{
-			seta=WHITE;
-			}
-		last_tick=HAL_GetTick();
-	}
-	if(jogo){
-
+void NavegadorCursor(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t linhas, uint8_t colunas){
 		if (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9)) { //esquerda
 			if(VerificaSeExisteCartaDisponivelLinha(tabuleiro, linhaAtual, colunaAtual, colunas)){
 				MoverParaProximaCartaLinha(tabuleiro, colunaAtual, linhaAtual, colunas, 0);
+				HAL_Delay(150);
 			}
             else{
             	MoverParaLinhaComCarta(tabuleiro, linhaAtual, colunaAtual, linhas, colunas, 0);
+            	HAL_Delay(150);
             }
         }
 
 		else if (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10)) { // baixo
 			if(VerificaSeExisteCartaDisponivelColuna(tabuleiro, linhaAtual, colunaAtual, linhas)){
 				MoverParaProximaCartaColuna(tabuleiro, colunaAtual, linhaAtual, linhas, 1);
+				HAL_Delay(150);
 			}
 			else{
 				MoverParaColunaComCarta(tabuleiro, linhaAtual, colunaAtual, linhas, colunas, 1);
+				HAL_Delay(150);
 			}
 
         }
@@ -533,30 +523,24 @@ void NavegadorCursor(bool jogo, char tabuleiro[4][4], uint8_t* linhaAtual, uint8
 		else if (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11)) { //direita
 			if(VerificaSeExisteCartaDisponivelLinha(tabuleiro, linhaAtual, colunaAtual, colunas)){
 				MoverParaProximaCartaLinha(tabuleiro, colunaAtual, linhaAtual, colunas, 1);
+				HAL_Delay(150);
 			}
 			else{
 			    MoverParaLinhaComCarta(tabuleiro, linhaAtual, colunaAtual, linhas, colunas, 1);
+			    HAL_Delay(150);
 			}
 		}
 
-		else if (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12)) { //cima
+		/*else if (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12)) { //cima
 			if(VerificaSeExisteCartaDisponivelColuna(tabuleiro, linhaAtual, colunaAtual, linhas)){
 				MoverParaProximaCartaColuna(tabuleiro, colunaAtual, linhaAtual, linhas, 0);
+				HAL_Delay(150);
 			}
 			else{
 				MoverParaColunaComCarta(tabuleiro, linhaAtual, colunaAtual, linhas, colunas, 0);
+				HAL_Delay(150);
 			}
-		}
-	}
-	else{
-	ST7789_DrawFilledRectangle(10, 38, 60, 6, WHITE);
-	ST7789_DrawFilledRectangle(170, 38, 60, 6, WHITE);
-	x=5;
-	y=79;
-	jogo=true;
-	}
-	ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, seta);
-	ST7789_DrawFilledRectangle(x, y-3, 25 , 6, seta);
+		}*/
 }
 
 bool VerificaSeExisteCartaDisponivelLinha(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t colunas){
@@ -572,6 +556,7 @@ void MoverParaProximaCartaLinha(char tabuleiro[4][4], uint8_t* colunaAtual, uint
 		if(sentido>0) *colunaAtual = (*colunaAtual + 1) % colunas;
 		else *colunaAtual = (*colunaAtual == 0) ? colunas - 1 : *colunaAtual - 1;
 	} while(tabuleiro[*linhaAtual][*colunaAtual] == '0' && *colunaAtual != original);
+	HAL_Delay(150);
 }
 
 void MoverParaLinhaComCarta(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t linhas, uint8_t colunas, uint8_t sentido) { // 1 para baixo ou 0 para cima
@@ -586,6 +571,7 @@ void MoverParaLinhaComCarta(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* 
 			break;
 		}
 	}
+	HAL_Delay(150);
 }
 
 void MoverParaProximaCartaColuna(char tabuleiro[4][4], uint8_t* colunaAtual, uint8_t* linhaAtual, uint8_t linhas, uint8_t sentido){
@@ -594,6 +580,7 @@ void MoverParaProximaCartaColuna(char tabuleiro[4][4], uint8_t* colunaAtual, uin
 		if(sentido > 0) *linhaAtual = (*linhaAtual + 1) % linhas;
 		else  *linhaAtual = (*linhaAtual == 0) ? linhas - 1 : *linhaAtual - 1;
 	} while(tabuleiro[*linhaAtual][*colunaAtual] == '0' && *linhaAtual != original);
+	HAL_Delay(150);
 }
 
 void MoverParaColunaComCarta(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t linhas, uint8_t colunas, uint8_t sentido){
@@ -608,17 +595,18 @@ void MoverParaColunaComCarta(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t*
 				break;
 			}
 		}
+	HAL_Delay(150);
 }
 
 bool VerificaSeExisteCartaDisponivelColuna(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t linhas){
 	for(int l = 0; l<linhas; l++){
-		if(tabuleiro[l][*colunaAtual] != '0') return true;
+		if(tabuleiro[l][*colunaAtual] != '0' && l != *linhaAtual) return true;
 	}
 	return false;
 }
 
 void IniciarJogo () {
-	bool menu = true;
+	/*bool menu = true;
 	uint8_t linhas = 4, colunas = 4, jogadores = 1;
 	ST7789_Fill_Color(BLACK);
 	ST7789_WriteString(0,0, "Matching Pairs", Font_16x26, WHITE, BLACK);
@@ -629,11 +617,12 @@ void IniciarJogo () {
      ST7789_WriteString(40,100, "Recordes", Font_11x18, WHITE, BLACK);
      ST7789_WriteString(40,130, "Configuracoes", Font_11x18, WHITE, BLACK);
      NavegadorCursor(false, 0, 0, 0, 0, 0);
-    }
+    }*/
+
      char tabuleiro[4][4];
      tentativas = 0;
-     GerarParesAleatorios(tabuleiro, linhas, colunas);
-     Jogo(tabuleiro, linhas, colunas, 0, 0);
+     GerarParesAleatorios(tabuleiro, 4, 4);
+     Jogo(tabuleiro, 4, 4, 0, 0);
      AtualizarRecorde(tentativas);
 }
 
@@ -729,8 +718,9 @@ void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAt
 		VirarTodasCartas(linhas, colunas);
 		uint8_t ultimaPosicao[2] = {100, 100};
 		while(!VerificaFimDeJogo(acertos, linhas, colunas)){
-			NavegadorCursor(true, tabuleiro, &linhaAtual, &colunaAtual, linhas, colunas);
-			if(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) && !HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) && linhaAtual != ultimaPosicao[0] && colunaAtual != ultimaPosicao[1]){
+			NavegadorCursor(tabuleiro, &linhaAtual, &colunaAtual, linhas, colunas);
+			//if(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) && !HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) && (linhaAtual != ultimaPosicao[0] || colunaAtual != ultimaPosicao[1]))
+			if(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12) && (linhaAtual != ultimaPosicao[0] || colunaAtual != ultimaPosicao[1])){
 				SelecionarCarta(tabuleiro, linhaAtual, colunaAtual, linhas, colunas);
 				posicoesCartasSelecionadas[totalDeCartasSelecionadas%2][0] = linhaAtual;
 				posicoesCartasSelecionadas[totalDeCartasSelecionadas%2][1] = colunaAtual;
@@ -750,6 +740,8 @@ void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAt
 						HAL_Delay(1000);
 						ST7789_DrawImage(240/colunas*posicoesCartasSelecionadas[0][1], 240/linhas*posicoesCartasSelecionadas[0][0], 50, 50, (const uint16_t *)fundocarta);
 						ST7789_DrawImage(240/colunas*posicoesCartasSelecionadas[1][1], 240/linhas*posicoesCartasSelecionadas[1][0], 50, 50, (const uint16_t *)fundocarta);
+						ultimaPosicao[0] = 100;
+						ultimaPosicao[1] = 100;
 					}
 				}
 			}
