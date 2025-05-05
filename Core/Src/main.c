@@ -403,7 +403,7 @@ int main(void)
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
   ST7789_Init();
-
+  //teste
   /* USER CODE END 2 */
 
   /* Infinite loop */
