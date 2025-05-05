@@ -366,12 +366,14 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	IniciarJogo();
+	ExibirFimDeJogo(tentativas, recorde);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
 
 
-	  IniciarJogo();
+	  
   }
   /* USER CODE END 3 */
 }
