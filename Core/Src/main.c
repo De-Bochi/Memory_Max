@@ -26,6 +26,7 @@
 #include "stdbool.h"
 #include "jogo.h"
 #include "stdlib.h"
+#include "stdio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -366,6 +367,7 @@ void MoverParaLinhaComCarta(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* 
 void MoverParaColunaComCarta(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t linhas, uint8_t colunas, uint8_t sentido);
 void MoverParaProximaCartaColuna(char tabuleiro[4][4], uint8_t* colunaAtual, uint8_t* linhaAtual, uint8_t linhas, uint8_t sentido);
 void AtualizarRecorde(uint8_t atual);
+void ExibirFimDeJogo(uint8_t numeroDeTentativasDaRodada, uint8_t recorde);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -848,7 +850,8 @@ void AtualizarTentativas(uint8_t *tentativas){
 }
 
 bool VerificaFimDeJogo(uint8_t acertos, uint8_t linhas, uint8_t colunas){
-	return acertos >= linhas*colunas;
+	if(acertos >= linhas*colunas/2) return true;
+	return false;
 }
 
 void ExibirFimDeJogo(uint8_t numeroDeTentativasDaRodada, uint8_t recorde){
@@ -920,7 +923,7 @@ void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAt
 				}
 			}
 		}
-		//ganhou o jogo
+		break;
 	}
 }
 /* USER CODE END 4 */
