@@ -47,211 +47,10 @@
 SPI_HandleTypeDef hspi1;
 
 /* USER CODE BEGIN PV */
-static const bool hearts[50][50] = {{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,true,false,false,true,true,true,true,false,false,true,true,false,false,false,false,false,false,false,false,true,false,false,true,true,true,true,true,false,false,true,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,true,true,false,true,true,true,true,true,true,true,true,false,false,true,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false},
-		{false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false},
-		{false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false},
-		{false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false},
-		{false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false},
-		{false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false},
-		{false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false},
-		{false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false},
-		{false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false},
-		{false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false},
-		{false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false},
-		{false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false},
-		{false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false},
-		{false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,true,true,true,true,true,true,true,true,true,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,true,true,true,true,true,true,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,true,true,true,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false}
-};
-static const bool spades[50][50] = {{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,true,true,true,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,true,true,true,true,true,true,true,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,true,true,true,true,true,true,true,true,true,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false},
-		{false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false},
-		{false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false},
-		{false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false},
-		{false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false},
-		{false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false},
-		{false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false},
-		{false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false},
-		{false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false},
-		{false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false},
-		{false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false},
-		{false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false},
-		{false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false},
-		{false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false},
-		{false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false},
-		{false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false},
-		{false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true,false,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,true,false,false,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true,true,true,false,false,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,true,true,false,false,false,true,true,true,false,false,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,true,true,true,false,false,false,true,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,true,true,true,false,true,true,true,true,true,true,true,true,false,true,true,true,false,false,false,false,true,true,true,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,false,false,true,true,true,true,true,true,true,true,true,true,true,false,true,false,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false}
-};
-static const bool clubs[50][50] = {{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,true,true,true,true,true,true,true,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,true,true,true,true,true,true,true,true,true,true,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,true,true,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,true,true,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,true,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,true,true,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,true,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false},
-		{false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false},
-		{false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false},
-		{false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false},
-		{false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false},
-		{false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false},
-		{false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false},
-		{false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false},
-		{false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false},
-		{false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false},
-		{false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false},
-		{false,false,false,false,false,false,true,false,false,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true,true,false,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,true,true,false,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true,true,true,true,false,false,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,true,false,false,false,false,true,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,true,false,false,false,false,true,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,true,true,true,true,false,true,true,true,true,true,false,true,true,true,true,true,true,true,true,false,true,true,true,true,false,false,true,true,true,true,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false}
-};
-static const bool diamonds[50][50] = {
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false},
-		{false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false},
-		{false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false},
-		{false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false},
-		{false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false},
-		{false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false},
-		{false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false},
-		{false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false},
-		{false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false},
-		{false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false},
-		{false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,true,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,true,true,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
-		{false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false}
-};
+static const uint64_t hearts[50] = {0x00,0x00,0x1E0003E000,0x60800C1800,0x9E6013E400,0x37F902FFA00,0x7FFE85FFD00,0xFFFFCBFFE80,0xBFFF57FFF40,0x17FFFBFFFFE0,0x3FFFFEFFFFA0,0x2FFFFDFFFFD0,0x5FFFFFFFFFF0,0x5FFFFFFFFFE8,0xBFFFFFFFFFE8,0xBFFFFFFFFFF4,0xBFFFFFFFFFF4,0xBFFFFFFFFFF4,0x17FFFFFFFFFF4,0x17FFFFFFFFFF4,0x17FFFFFFFFFF4,0xBFFFFFFFFFF4,0xBFFFFFFFFFF4,0xBFFFFFFFFFF4,0xBFFFFFFFFFE8,0x7FFFFFFFFFE8,0x5FFFFFFFFFE8,0x5FFFFFFFFFD0,0x2FFFFFFFFFD0,0x3FFFFFFFFFA0,0x17FFFFFFFFE0,0x1FFFFFFFFF40,0xBFFFFFFFFC0,0x5FFFFFFFE80,0x7FFFFFFFD00,0x2FFFFFFFA00,0x17FFFFFFE00,0xBFFFFFF400,0x5FFFFFE800,0x2FFFFFD000,0x17FFFFA000,0xBFFFE4000,0x5FFFD8000,0x27FFA0000,0x1BFE40000,0x4FD80000,0x37200000,0x8C00000,0x7000000,0x00};
+static const uint64_t spades[50] = {0x13900000,0x6FEC0000,0x9FF20000,0x37FFD0000,0x4FFFE8000,0xBFFFF6000,0x17FFFFB000,0x2FFFFFF800,0x5FFFFFFC00,0xBFFFFFFE00,0x17FFFFFFB00,0x2FFFFFFFD00,0x7FFFFFFFE80,0x5FFFFFFFF40,0xBFFFFFFFFC0,0x1FFFFFFFFFA0,0x17FFFFFFFFF0,0x2FFFFFFFFFD0,0x2FFFFFFFFFE8,0x5FFFFFFFFFE8,0x5FFFFFFFFFF8,0xBFFFFFFFFFF4,0xBFFFFFFFFFF4,0xBFFFFFFFFFF4,0xBFFFFFFFFFFA,0xBFFFFFFFFFFA,0x17FFFFFFFFFFA,0x17FFFFFFFFFFA,0x17FFFFFFFFFFA,0x17FFFFFFFFFFA,0x7FFFFFFFFFFA,0xBFFFFFFFFFFA,0xBFFFFFFFFFF4,0xBFFFFFFFFFF4,0x7FFFFFFFFFF4,0x5FFFFFFFFFE8,0x3FFFFFFFFFF8,0x3FFFFFFFFFD0,0x17FFFFFFFFA0,0xBFFFFFFFF40,0x5FFEFDFFE80,0x27FDFE7FD00,0x18E7FF8E200,0x61DFEE1C00,0xE7FF5E000,0xFFF40000,0xBFF40000,0x17FFA0000,0x17FFF0000,0x7FFC0000};
+static const uint64_t clubs[50] = {0xDFCC0000,0x13FF20000,0x2FFFD0000,0x5FFFF8000,0xFFFFE8000,0xBFFFF4000,0x17FFFFE000,0x17FFFFA000,0x2FFFFFA000,0x2FFFFFD000,0x2FFFFFD000,0x2FFFFFD000,0x2FFFFFD000,0x2FFFFFD000,0x7FFFFFF000,0x18FFFFFCC00,0x27FFFFFF300,0x5FFFFFFFC80,0xBFFFFFFFF40,0x17FFFFFFFFA0,0x2FFFFFFFFFF0,0x7FFFFFFFFFD0,0x5FFFFFFFFFE8,0xFFFFFFFFFFE8,0xBFFFFFFFFFF4,0xBFFFFFFFFFF4,0xBFFFFFFFFFF4,0x17FFFFFFFFFF4,0x17FFFFFFFFFF4,0x17FFFFFFFFFF4,0x3FFFFFFFFFF4,0xBFFFFFFFFFF4,0xBFFFFFFFFFF4,0xBFFFFFFFFFFC,0x5FFFFFFFFFE8,0x7FFFFFFFFFF8,0x2FFFFFFFFFD0,0x3FFFFFFFFFA0,0x1FFFFFFFFF40,0x9FFDFDFFE80,0x6FFBFE7FD00,0x1087FF84200,0xF7DFEF3C00,0x8BFF44000,0xBFFC0000,0xFFF40000,0x17FFA0000,0x3FFFE0000,0x2FFFC0000,0x00};
+static const uint64_t diamonds[50] = {0xB400000,0x1FE00000,0x37F00000,0x2FD00000,0x5FE80000,0xBFF40000,0x17FFA0000,0x2FFFD0000,0x7FFFE8000,0xDFFFFC000,0xBFFFF6000,0x17FFFFA000,0x2FFFFFD000,0x5FFFFFE800,0xBFFFFFF400,0x1FFFFFFFA00,0x3FFFFFFFF00,0x2FFFFFFFD80,0x5FFFFFFFE80,0xBFFFFFFFF40,0x17FFFFFFFFA0,0x2FFFFFFFFFD0,0x5FFFFFFFFFE8,0xFFFFFFFFFFFC,0xBFFFFFFFFFF4,0xFFFFFFFFFFFC,0x5FFFFFFFFFE8,0x2FFFFFFFFFD0,0x17FFFFFFFFA0,0xBFFFFFFFF40,0x5FFFFFFFE80,0x2FFFFFFFD00,0x37FFFFFFF00,0x1FFFFFFFE00,0xBFFFFFF400,0x5FFFFFE800,0x2FFFFFD000,0x17FFFFA000,0xBFFFF4000,0xDFFFFC000,0x7FFFF8000,0x2FFFD0000,0x17FFA0000,0xBFF40000,0x5FE80000,0x2FD00000,0x17B00000,0x1FE00000,0xB400000,0x4800000};
 static const uint16_t fundocarta[][(50*50/2)]  = {
   0x4eeb, 0x14f5, 0x51ec, 0x8eeb, 0x18f6, 0xd7f5, 0x39f6, 0xf8f5, 0x76ed, 0xb3f4, 0x96f5, 0x55ed, 0xf7f5, 0xf0eb, 0x59f6, 0x38f6, 0x8eeb, 0xd7f5, 0x59f6, 0x92ec, 0x14f5, 0x59f6, 0x55f5, 0x92f4, 0x18f6, 0x18f6, 0x92ec, 0x55f5, 0x59f6, 0x34f5, 0x92ec, 0x59f6, 0xd7f5, 0x8eeb, 0x38f6, 0x39f6, 0xd0eb, 0xf7f5, 0x55ed, 0x96f5, 0xb3f4, 0x76ed, 0x18f6, 0x39f6, 0xd7f5, 0x18f6, 0x6eeb, 0x51ec, 0x34f5, 0x4eeb,
   0x4deb, 0x31f4, 0x14f5, 0xf0eb, 0x34ed, 0x18f6, 0x59f6, 0x18f6, 0xb3ec, 0x92ec, 0x76f5, 0x14ed, 0x51ec, 0xb7f5, 0x35f5, 0x92f4, 0x18f6, 0xf4f4, 0xf4f4, 0x55f5, 0x55f5, 0x14f5, 0xd3ec, 0xb6f5, 0xb3f4, 0xb3f4, 0xb6f5, 0xd3ec, 0x14f5, 0x55f5, 0x55f5, 0xf4f4, 0xf4f4, 0x18f6, 0xb2f4, 0x35f5, 0xb7f5, 0x51ec, 0x14ed, 0x76f5, 0xb2ec, 0xb3ec, 0x18f6, 0x59f6, 0x18f6, 0x14ed, 0xd0eb, 0x14f5, 0x31f4, 0x4deb,
@@ -324,6 +123,7 @@ void MoverParaColunaComCarta(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t*
 void MoverParaProximaCartaColuna(char tabuleiro[4][4], uint8_t* colunaAtual, uint8_t* linhaAtual, uint8_t linhas, uint8_t sentido);
 void AtualizarRecorde(uint8_t atual);
 void ExibirFimDeJogo(uint8_t numeroDeTentativasDaRodada, uint8_t recorde);
+bool CursorEstaEmCartaSelecionada(uint8_t linha, uint8_t coluna, uint8_t posicoes[2][2], uint8_t totalSelecionadas);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -655,28 +455,28 @@ void SelecionarCarta(char tabuleiro[4][4], uint8_t i, uint8_t j, uint8_t linhas,
 	uint8_t x = 240/colunas * j, y = 240/linhas * i;
 	switch(tabuleiro[i][j]){
 	case 'a':
-		DrawCard(x, y, RED, (const bool*) hearts);
+		DrawCard(x, y, RED, (const uint64_t*) hearts, WHITE);
 		break;
 	case 'b':
-		DrawCard(x, y, RED, (const bool*) diamonds);
+		DrawCard(x, y, RED, (const uint64_t*) diamonds, WHITE);
 		break;
 	case 'c':
-		DrawCard(x, y, BLACK, (const bool*) clubs);
+		DrawCard(x, y, BLACK, (const uint64_t*) clubs, WHITE);
 		break;
 	case 'd':
-		DrawCard(x, y, BLACK, (const bool*) spades);
+		DrawCard(x, y, BLACK, (const uint64_t*) spades, WHITE);
 		break;
 	case 'e':
-		DrawCard(x, y, BLACK, (const bool*) hearts);
+		DrawCard(x, y, BLACK, (const uint64_t*) hearts, WHITE);
 		break;
 	case 'f':
-		DrawCard(x, y, BLACK, (const bool*) diamonds);
+		DrawCard(x, y, BLACK, (const uint64_t*) diamonds, WHITE);
 		break;
 	case 'g':
-		DrawCard(x, y, RED, (const bool*) clubs);
+		DrawCard(x, y, RED, (const uint64_t*) clubs, WHITE);
 		break;
 	case 'h':
-		DrawCard(x, y, RED, (const bool*) spades);
+		DrawCard(x, y, RED, (const uint64_t*) spades, WHITE);
 		break;
 	}
 }
@@ -709,25 +509,29 @@ bool VerificaFimDeJogo(uint8_t acertos, uint8_t linhas, uint8_t colunas){
 
 void ExibirFimDeJogo(uint8_t numeroDeTentativasDaRodada, uint8_t recorde){
 	ST7789_Fill_Color(BLACK);
-	DrawCard(120, 60, RED, (const bool*) hearts);
+	ST7789_WriteString(50, 150, "Parabens!", Font_16x26, WHITE, BLACK);
+	DrawCard(100, 60, RED, (const uint64_t*) hearts, BLACK);
 	HAL_Delay(200);
-	DrawCard(120, 60, WHITE, (const bool*) hearts);
+	DrawCard(100, 60, WHITE, (const uint64_t*) hearts, BLACK);
 	HAL_Delay(200);
-	DrawCard(120, 60, BLUE, (const bool*) hearts);
+	DrawCard(100, 60, BLUE, (const uint64_t*) hearts, BLACK);
 	HAL_Delay(200);
-	ST7789_WriteString(40, 20, "Fim de Jogo!", Font_11x18, WHITE, BLACK);
-	ST7789_WriteString(40, 50, "Tentativas:", Font_11x18, WHITE, BLACK);
-	ST7789_WriteString(40, 80, "Recorde:", Font_11x18, WHITE, BLACK);
-	ST7789_WriteString(40, 110, "Aperte qualquer botao", Font_11x18, WHITE, BLACK);
-	ST7789_WriteString(40, 140, "para reiniciar", Font_11x18, WHITE, BLACK);
+	ST7789_Fill_Color(BLACK);
+	ST7789_WriteString(20, 20, "Fim de Jogo!", Font_11x18, WHITE, BLACK);
+	ST7789_WriteString(20, 50, "Tentativas:", Font_11x18, WHITE, BLACK);
+	ST7789_WriteString(20, 80, "Recorde:", Font_11x18, WHITE, BLACK);
+	ST7789_WriteString(20, 120, "Aperte qualquer", Font_11x18, WHITE, BLACK);
+	ST7789_WriteString(80, 138, "botao", Font_11x18, WHITE, BLACK);
+	ST7789_WriteString(30, 156, "para reiniciar", Font_11x18, WHITE, BLACK);
 
 	char tentativasStr[3], recordeStr[3];
 	sprintf(tentativasStr, "%d", numeroDeTentativasDaRodada);
 	sprintf(recordeStr, "%d", recorde);
 	ST7789_WriteString(150, 50, tentativasStr, Font_11x18, WHITE, BLACK);
-	ST7789_WriteString(150, 80, recordeStr, Font_11x18, WHITE, BLACK);
+	ST7789_WriteString(110, 80, recordeStr, Font_11x18, WHITE, BLACK);
 
-	while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) || HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) || HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) || HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12));
+	while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) && HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) && HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) && HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12));
+	ST7789_Fill_Color(BLACK);
 
 
 }
@@ -736,17 +540,24 @@ void ExibirFimDeJogo(uint8_t numeroDeTentativasDaRodada, uint8_t recorde){
 void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAtual, uint8_t colunaAtual){
 	for(;;){
 		uint8_t totalDeCartasSelecionadas = 0, acertos = 0, posicoesCartasSelecionadas[2][2];
-		for(int i = 0; i < colunas; i++){
-			for(int j = 0; j < linhas; j++){
+		for(int i = 0; i < linhas; i++){
+			for(int j = 0; j < colunas; j++){
 				SelecionarCarta(tabuleiro, i, j, linhas, colunas);
 			}
 		}
 		HAL_Delay(1500);
 		VirarTodasCartas(linhas, colunas);
-		uint8_t ultimaPosicao[2] = {100, 100};
+		uint8_t ultimaPosicao[2] = {100, 100}, ultimaPosicaoCursor[2] = {100,100};
 		while(!VerificaFimDeJogo(acertos, linhas, colunas)){
 			NavegadorCursor(tabuleiro, &linhaAtual, &colunaAtual, linhas, colunas);
-			//if(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) && !HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) && (linhaAtual != ultimaPosicao[0] || colunaAtual != ultimaPosicao[1]))
+			if (!CursorEstaEmCartaSelecionada(linhaAtual, colunaAtual, posicoesCartasSelecionadas, totalDeCartasSelecionadas) && (ultimaPosicaoCursor[0] != linhaAtual || ultimaPosicaoCursor[1] != colunaAtual)) {
+				if (ultimaPosicaoCursor[0] < linhas && ultimaPosicaoCursor[1] < colunas && tabuleiro[ultimaPosicaoCursor[0]][ultimaPosicaoCursor[1]] != '0' && !CursorEstaEmCartaSelecionada(ultimaPosicaoCursor[0], ultimaPosicaoCursor[1], posicoesCartasSelecionadas, totalDeCartasSelecionadas)) {
+					ST7789_DrawImage(240 / colunas * ultimaPosicaoCursor[1], 240 / linhas * ultimaPosicaoCursor[0], 50, 50, (const uint16_t *)fundocarta);
+				}
+				ST7789_DrawFilledCircle(240/colunas * colunaAtual + 25, 240/linhas * linhaAtual + 25, 20, BLUE);
+				ultimaPosicaoCursor[0] = linhaAtual;
+				ultimaPosicaoCursor[1] = colunaAtual;
+			}
 			if(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12) && (linhaAtual != ultimaPosicao[0] || colunaAtual != ultimaPosicao[1])){
 				SelecionarCarta(tabuleiro, linhaAtual, colunaAtual, linhas, colunas);
 				posicoesCartasSelecionadas[totalDeCartasSelecionadas%2][0] = linhaAtual;
@@ -776,6 +587,17 @@ void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAt
 		break;
 	}
 }
+bool CursorEstaEmCartaSelecionada(uint8_t linha, uint8_t coluna, uint8_t posicoes[2][2], uint8_t totalSelecionadas) {
+	if (totalSelecionadas == 0) return false;
+
+	for (int i = 0; i < totalSelecionadas && i < 2; i++) {
+		if (linha == posicoes[i][0] && coluna == posicoes[i][1]) {
+			return true;
+		}
+	}
+	return false;
+}
+
 /* USER CODE END 4 */
 
 /**
