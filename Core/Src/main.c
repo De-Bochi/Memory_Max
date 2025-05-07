@@ -113,6 +113,7 @@ static void MX_SPI1_Init(void);
 /* USER CODE BEGIN PFP */
 void IniciarJogo();
 void SelecionarCarta(char tabuleiro[4][4], uint8_t i, uint8_t j, uint8_t linhas, uint8_t colunas);
+void Jogoteste(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAtual, uint8_t colunaAtual);
 void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAtual, uint8_t colunaAtual);
 void GerarParesAleatorios(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas);
 bool VerificaSeExisteCartaDisponivelLinha(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t colunas);
@@ -426,7 +427,7 @@ void IniciarJogo () {
      char tabuleiro[4][4];
      tentativas = 0;
      GerarParesAleatorios(tabuleiro, 4, 4);
-     Jogo(tabuleiro, 4, 4, 0, 0);
+     Jogoteste(tabuleiro, 4, 4, 0, 0);
      AtualizarRecorde(tentativas);
 }
 
@@ -587,6 +588,60 @@ void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAt
 		break;
 	}
 }
+
+void Jogoteste(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAtual, uint8_t colunaAtual){
+	for(;;){
+		uint8_t totalDeCartasSelecionadas = 0, acertosJogador1 = 0, acertosJogador2 = 0, posicoesCartasSelecionadas[2][2], jogadorAtual = 0;
+		for(int i = 0; i < linhas; i++){
+			for(int j = 0; j < colunas; j++){
+				SelecionarCarta(tabuleiro, i, j, linhas, colunas);
+			}
+		}
+		HAL_Delay(1500);
+		VirarTodasCartas(linhas, colunas);
+		uint8_t ultimaPosicao[2] = {100, 100}, ultimaPosicaoCursor[2] = {100,100};
+		while(!VerificaFimDeJogo(acertosJogador1 + acertosJogador2, linhas, colunas)){
+			NavegadorCursor(tabuleiro, &linhaAtual, &colunaAtual, linhas, colunas);
+			if (!CursorEstaEmCartaSelecionada(linhaAtual, colunaAtual, posicoesCartasSelecionadas, totalDeCartasSelecionadas) && (ultimaPosicaoCursor[0] != linhaAtual || ultimaPosicaoCursor[1] != colunaAtual)) {
+				if (ultimaPosicaoCursor[0] < linhas && ultimaPosicaoCursor[1] < colunas && tabuleiro[ultimaPosicaoCursor[0]][ultimaPosicaoCursor[1]] != '0' && !CursorEstaEmCartaSelecionada(ultimaPosicaoCursor[0], ultimaPosicaoCursor[1], posicoesCartasSelecionadas, totalDeCartasSelecionadas)) {
+					ST7789_DrawImage(240 / colunas * ultimaPosicaoCursor[1], 240 / linhas * ultimaPosicaoCursor[0], 50, 50, (const uint16_t *)fundocarta);
+				}
+				ST7789_DrawFilledCircle(240/colunas * colunaAtual + 25, 240/linhas * linhaAtual + 25, 20, (jogadorAtual%2 == 0) ? BLUE : YELLOW);
+				ultimaPosicaoCursor[0] = linhaAtual;
+				ultimaPosicaoCursor[1] = colunaAtual;
+			}
+			if(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12) && (linhaAtual != ultimaPosicao[0] || colunaAtual != ultimaPosicao[1])){
+				SelecionarCarta(tabuleiro, linhaAtual, colunaAtual, linhas, colunas);
+				posicoesCartasSelecionadas[totalDeCartasSelecionadas%2][0] = linhaAtual;
+				posicoesCartasSelecionadas[totalDeCartasSelecionadas%2][1] = colunaAtual;
+				totalDeCartasSelecionadas++;
+				ultimaPosicao[0] = linhaAtual;
+				ultimaPosicao[1] = colunaAtual;
+				if(totalDeCartasSelecionadas % 2 == 0){
+					AtualizarTentativas(&tentativas);
+					char carta1 = tabuleiro[posicoesCartasSelecionadas[0][0]][posicoesCartasSelecionadas[0][1]];
+					char carta2 = tabuleiro[posicoesCartasSelecionadas[1][0]][posicoesCartasSelecionadas[1][1]];
+					if(CompararPares(carta1, carta2)){
+						if(jogadorAtual == 0) acertosJogador1++;
+						else acertosJogador2++;
+						tabuleiro[posicoesCartasSelecionadas[0][0]][posicoesCartasSelecionadas[0][1]] = '0';
+						tabuleiro[posicoesCartasSelecionadas[1][0]][posicoesCartasSelecionadas[1][1]] = '0';
+					}
+					else{
+						HAL_Delay(1000);
+						ST7789_DrawImage(240/colunas*posicoesCartasSelecionadas[0][1], 240/linhas*posicoesCartasSelecionadas[0][0], 50, 50, (const uint16_t *)fundocarta);
+						ST7789_DrawImage(240/colunas*posicoesCartasSelecionadas[1][1], 240/linhas*posicoesCartasSelecionadas[1][0], 50, 50, (const uint16_t *)fundocarta);
+						ultimaPosicao[0] = 100;
+						ultimaPosicao[1] = 100;
+					}
+					jogadorAtual = (jogadorAtual+1)%2;
+				}
+			}
+		}
+		break;
+	}
+}
+
 bool CursorEstaEmCartaSelecionada(uint8_t linha, uint8_t coluna, uint8_t posicoes[2][2], uint8_t totalSelecionadas) {
 	if (totalSelecionadas == 0) return false;
 
