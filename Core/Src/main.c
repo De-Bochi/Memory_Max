@@ -307,7 +307,7 @@ short opcao=0,lugar=0;
 
 void setar() {
 
-		if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) == 0){
+		if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) == 0 && lugar!=3){
 			ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, BLACK);
 			ST7789_DrawFilledRectangle(x, y-3, 25 , 6, BLACK);
 			if(lugar==0){
@@ -355,7 +355,7 @@ void setar() {
 			}
 			}
 			}
-		else if((HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12) == 0)&& opcao>0){
+		else if(((HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12) == 0)&& opcao>0)&&lugar!=3){
 					if(p==42 &&lugar==1){
 						ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, BLACK);
 						ST7789_DrawFilledRectangle(x, y-3, 25 , 6, BLACK);
@@ -376,7 +376,7 @@ void setar() {
 		    		opcao--;
 		    		HAL_Delay(100);
 		    	}
-			else if((HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == 0)&& opcao<2&&lugar==0||(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == 0)&&lugar==1&&opcao<1){
+			else if(((HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == 0)&& opcao<2&&lugar==0||(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == 0)&&lugar==1&&opcao<1)&&lugar!=3){
 				 	if(P==42 &&lugar==1){
 				 		ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, BLACK);
 				 		ST7789_DrawFilledRectangle(x, y-3, 25 , 6, BLACK);
@@ -406,6 +406,7 @@ void setar() {
 			    z=30;
 			    lugar=0;
 			}
+			if(lugar!=3&&lugar!=1){
 		if ((HAL_GetTick()-last_tick)>500){
 			if(seta==WHITE)
 				{
@@ -419,7 +420,11 @@ void setar() {
 		}
 		ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, seta);
 		ST7789_DrawFilledRectangle(x, y-3, 25 , 6, seta);
-
+	} else{
+		seta=BLACK;
+		ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, seta);
+		ST7789_DrawFilledRectangle(x, y-3, 25 , 6, seta);
+	}
 	}
 
 void NavegadorCursor(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t linhas, uint8_t colunas){
@@ -560,8 +565,20 @@ void IniciarJogo () {
 	    	ST7789_WriteString(65,181, "1", Font_11x18, WHITE, BLACK);
 	    	ST7789_WriteString(175,181, "2", Font_11x18, WHITE, BLACK);
 	     }
+		 else if(lugar==2){
+			ST7789_WriteString(60,70, "Recordes", Font_11x18, WHITE, BLACK);
+            if(recorde==255){
+				ST7789_WriteString(40,100, "Nenhum recorde", Font_11x18, WHITE, BLACK)
+		    } else{
+			char records[3]
+			sprintf(records, "%d", recorde);
+			ST7789_WriteString(40,100, "seu recorde é ", Font_11x18, WHITE, BLACK);
+			ST7789_WriteString(154,100, records, Font_11x18, WHITE, BLACK);
+		 	}
+		}
 	     setar();
 	 }
+	
 
      char tabuleiro[linhas][colunas];
      tentativas = 0;
