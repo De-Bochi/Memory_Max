@@ -307,7 +307,7 @@ short opcao=0,lugar=0;
 
 void setar() {
 
-		if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) == 0 && lugar!=3){
+		if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) == 0 && lugar!=2){
 			ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, BLACK);
 			ST7789_DrawFilledRectangle(x, y-3, 25 , 6, BLACK);
 			if(lugar==0){
@@ -324,6 +324,7 @@ void setar() {
 					lugar=1;
 					break;
 					case 2:
+				    ST7789_Fill_Color(BLACK);
 					lugar=2;
 					opcao=0;
 				   break;
@@ -355,7 +356,7 @@ void setar() {
 			}
 			}
 			}
-		else if(((HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12) == 0)&& opcao>0)&&lugar!=3){
+		else if(((HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12) == 0)&& opcao>0)&&lugar!=2){
 					if(p==42 &&lugar==1){
 						ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, BLACK);
 						ST7789_DrawFilledRectangle(x, y-3, 25 , 6, BLACK);
@@ -376,7 +377,7 @@ void setar() {
 		    		opcao--;
 		    		HAL_Delay(100);
 		    	}
-			else if(((HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == 0)&& opcao<2&&lugar==0||(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == 0)&&lugar==1&&opcao<1)&&lugar!=3){
+			else if(((HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == 0)&& opcao<2&&lugar==0||(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == 0)&&lugar==1&&opcao<1)&&lugar!=2){
 				 	if(P==42 &&lugar==1){
 				 		ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, BLACK);
 				 		ST7789_DrawFilledRectangle(x, y-3, 25 , 6, BLACK);
@@ -406,7 +407,7 @@ void setar() {
 			    z=30;
 			    lugar=0;
 			}
-			if(lugar!=3&&lugar!=1){
+			if(lugar!=2){
 		if ((HAL_GetTick()-last_tick)>500){
 			if(seta==WHITE)
 				{
@@ -566,14 +567,14 @@ void IniciarJogo () {
 	    	ST7789_WriteString(175,181, "2", Font_11x18, WHITE, BLACK);
 	     }
 		 else if(lugar==2){
-			ST7789_WriteString(60,70, "Recordes", Font_11x18, WHITE, BLACK);
+			ST7789_WriteString(60,80, "Recordes", Font_16x26, WHITE, BLACK);
             if(recorde==255){
-				ST7789_WriteString(40,100, "Nenhum recorde", Font_11x18, WHITE, BLACK)
+				ST7789_WriteString(40,140, "Nenhum recorde", Font_11x18, WHITE, BLACK);
 		    } else{
-			char records[3]
+			char records[3];
 			sprintf(records, "%d", recorde);
-			ST7789_WriteString(40,100, "seu recorde é ", Font_11x18, WHITE, BLACK);
-			ST7789_WriteString(154,100, records, Font_11x18, WHITE, BLACK);
+			ST7789_WriteString(40,140, "seu recorde foi", Font_11x18, WHITE, BLACK);
+			ST7789_WriteString(110,160, records, Font_11x18, WHITE, BLACK);
 		 	}
 		}
 	     setar();
@@ -698,7 +699,7 @@ void ExibirFimDeJogo(uint8_t numeroDeTentativasDaRodada, uint8_t recorde){
 void FimDeJogoDoisJogadores(uint8_t scorePlayer1, uint8_t scorePlayer2){
 	ST7789_Fill_Color(BLACK);
 	ST7789_WriteString(20, 20, "Fim de Jogo!", Font_11x18, WHITE, BLACK);
-	if(scorePlayer1 == scorePlayer2) ST7789_WriteString(20, 50, "Empate", Font_11x18, WHITE, BLACK);
+	if(scorePlayer1 == scorePlayer2) ST7789_WriteString(20, 80, "Empate", Font_11x18, WHITE, BLACK);
 	ST7789_WriteString(20, 50, "Parabens!", Font_11x18, WHITE, BLACK);
 	if(scorePlayer1 != scorePlayer2) ST7789_WriteString(20, 80, (scorePlayer1>scorePlayer2) ? "Vitoria Player1" : "Vitoria Player2", Font_11x18, (scorePlayer1>scorePlayer2) ? BLUE : YELLOW, BLACK);
 
