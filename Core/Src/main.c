@@ -115,6 +115,7 @@ void IniciarJogo();
 void SelecionarCarta(char tabuleiro[4][4], uint8_t i, uint8_t j, uint8_t linhas, uint8_t colunas);
 void Jogoteste(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAtual, uint8_t colunaAtual);
 void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAtual, uint8_t colunaAtual);
+void Jogo2Players(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAtual, uint8_t colunaAtual);
 void GerarParesAleatorios(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas);
 bool VerificaSeExisteCartaDisponivelLinha(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t colunas);
 bool VerificaSeExisteCartaDisponivelColuna(char tabuleiro[4][4],uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t linhas);
@@ -170,7 +171,6 @@ int main(void)
   while (1)
   {
 	IniciarJogo();
-	ExibirFimDeJogo(tentativas, recorde);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -298,8 +298,129 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+uint8_t linhas = 4, colunas = 4, jogadores = 1;
 uint16_t seta = WHITE;
 uint32_t last_tick = 0;
+bool menu = true;
+int x=5, y=79,z=30,p=42,P=42;
+short opcao=0,lugar=0;
+
+void setar() {
+
+		if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) == 0){
+			ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, BLACK);
+			ST7789_DrawFilledRectangle(x, y-3, 25 , 6, BLACK);
+			if(lugar==0){
+			switch(opcao){
+					case 0:
+					ST7789_Fill_Color(BLACK);
+					menu=false;
+					break;
+					case 1:
+					ST7789_Fill_Color(BLACK);
+					if(p==152) x+=115;
+					opcao=0;
+					z=80;
+					lugar=1;
+					break;
+					case 2:
+					lugar=2;
+					opcao=0;
+				   break;
+			 }
+			} else{if(opcao==0&&linhas==4){
+		        ST7789_WriteChar(p, 98 , 'x', Font_16x26, BLACK, BLACK);
+				x+=115;
+				p=152;
+				linhas=3;
+				HAL_Delay(100);
+			} else if(opcao==0&&linhas==3){
+		        ST7789_WriteChar(p, 98 , 'x', Font_16x26, BLACK, BLACK);
+				x-=115;
+				p=42;
+				linhas=4;
+				HAL_Delay(100);
+			} else if(opcao==1&&jogadores==1){
+		        ST7789_WriteChar(P, 178 , 'x', Font_16x26, BLACK, BLACK);
+				x+=115;
+			    P=152;
+			    jogadores=2;
+			    HAL_Delay(100);
+			}else if(opcao==1&&jogadores==2){
+				ST7789_WriteChar(P, 178 , 'x', Font_16x26, BLACK, BLACK);
+				x-=115;
+			    P=42;
+			    jogadores=1;
+			    HAL_Delay(100);
+			}
+			}
+			}
+		else if((HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12) == 0)&& opcao>0){
+					if(p==42 &&lugar==1){
+						ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, BLACK);
+						ST7789_DrawFilledRectangle(x, y-3, 25 , 6, BLACK);
+						x=5;
+					}
+					else if(p!=42&&lugar==1) {
+						ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, BLACK);
+						ST7789_DrawFilledRectangle(x, y-3, 25 , 6, BLACK);
+						x=120;
+					} else{
+						 ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, BLACK);
+						 ST7789_DrawFilledRectangle(x, y-3, 25 , 6, BLACK);
+					}
+
+		    	    last_tick=HAL_GetTick();
+
+					y-=z;
+		    		opcao--;
+		    		HAL_Delay(100);
+		    	}
+			else if((HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == 0)&& opcao<2&&lugar==0||(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == 0)&&lugar==1&&opcao<1){
+				 	if(P==42 &&lugar==1){
+				 		ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, BLACK);
+				 		ST7789_DrawFilledRectangle(x, y-3, 25 , 6, BLACK);
+				 		x=5;
+				 	}
+				 	else if(P!=42&&lugar==1){
+				 		ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, BLACK);
+				 		ST7789_DrawFilledRectangle(x, y-3, 25 , 6, BLACK);
+				 		x=120;
+				 	}else{
+				 		ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, BLACK);
+				 		ST7789_DrawFilledRectangle(x, y-3, 25 , 6, BLACK);
+				 	}
+				    last_tick=HAL_GetTick();
+				    ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, BLACK);
+				    ST7789_DrawFilledRectangle(x, y-3, 25 , 6, BLACK);
+					y+=z;
+					opcao++;
+					HAL_Delay(100);
+			}
+			else if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == 0&&lugar>0){
+
+			    ST7789_Fill_Color(BLACK);
+			    opcao=0;
+			    x=5;
+			    y=79;
+			    z=30;
+			    lugar=0;
+			}
+		if ((HAL_GetTick()-last_tick)>500){
+			if(seta==WHITE)
+				{
+					seta=BLACK;
+				}
+			else if(seta==BLACK)
+				{
+				seta=WHITE;
+				}
+			last_tick=HAL_GetTick();
+		}
+		ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, seta);
+		ST7789_DrawFilledRectangle(x, y-3, 25 , 6, seta);
+
+	}
 
 void NavegadorCursor(char tabuleiro[4][4], uint8_t* linhaAtual, uint8_t* colunaAtual, uint8_t linhas, uint8_t colunas){
 		if (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9)) { //esquerda
@@ -411,24 +532,46 @@ bool VerificaSeExisteCartaDisponivelColuna(char tabuleiro[4][4], uint8_t* linhaA
 }
 
 void IniciarJogo () {
-	/*bool menu = true;
-	uint8_t linhas = 4, colunas = 4, jogadores = 1;
 	ST7789_Fill_Color(BLACK);
-	ST7789_WriteString(0,0, "Matching Pairs", Font_16x26, WHITE, BLACK);
-	ST7789_WriteString(88,30, "Game", Font_16x26, WHITE, BLACK);
 
-     while(menu){
-     ST7789_WriteString(40,70, "Iniciar jogo", Font_11x18, WHITE, BLACK);
-     ST7789_WriteString(40,100, "Recordes", Font_11x18, WHITE, BLACK);
-     ST7789_WriteString(40,130, "Configuracoes", Font_11x18, WHITE, BLACK);
-     NavegadorCursor(false, 0, 0, 0, 0, 0);
-    }*/
+	menu = true;
+	while(menu){
+		ST7789_WriteString(0,0, "Matching Pairs", Font_16x26, WHITE, BLACK);
+		ST7789_WriteString(88,30, "Game", Font_16x26, WHITE, BLACK);
+	    ST7789_DrawFilledRectangle(5, 43, 70, 6, WHITE);
+	    ST7789_DrawFilledRectangle(165, 43, 70 , 6, WHITE);
+	    if (lugar==0){
+	    	ST7789_WriteString(40,70, "Iniciar jogo", Font_11x18, WHITE, BLACK);
+	    	ST7789_WriteString(40,100, "Configuracoes", Font_11x18, WHITE, BLACK);
+	    	ST7789_WriteString(40,130, "Recordes", Font_11x18, WHITE, BLACK);
 
-     char tabuleiro[4][4];
+	    }
+	    else if(lugar==1){
+	    	ST7789_WriteString(0,70, "Tamanho do tabuleiro", Font_11x18, WHITE, BLACK);
+	    	ST7789_DrawRectangle(40, 100, 60, 120, WHITE);
+	    	ST7789_DrawRectangle(150, 100, 170,120, WHITE);
+	        ST7789_WriteChar(p, 98 , 'x', Font_16x26, WHITE, BLACK);
+	        ST7789_WriteChar(P, 178 , 'x', Font_16x26, WHITE, BLACK);
+	    	ST7789_WriteString(65,101, "4x4", Font_11x18, WHITE, BLACK);
+	    	ST7789_WriteString(175,101, "3x4", Font_11x18, WHITE, BLACK);
+	    	ST7789_WriteString(0,150, "Quantidade de players", Font_11x18, WHITE, BLACK);
+	    	ST7789_DrawRectangle(40, 180, 60, 200, WHITE);
+	    	ST7789_DrawRectangle(150,180, 170,200, WHITE);
+	    	ST7789_WriteString(65,181, "1", Font_11x18, WHITE, BLACK);
+	    	ST7789_WriteString(175,181, "2", Font_11x18, WHITE, BLACK);
+	     }
+	     setar();
+	 }
+
+     char tabuleiro[linhas][colunas];
      tentativas = 0;
-     GerarParesAleatorios(tabuleiro, 4, 4);
-     Jogoteste(tabuleiro, 4, 4, 0, 0);
-     AtualizarRecorde(tentativas);
+     GerarParesAleatorios(tabuleiro, linhas, colunas);
+     if(jogadores == 1){
+    	 Jogo(tabuleiro, linhas, colunas, 0, 0);
+    	 AtualizarRecorde(tentativas);
+    	 ExibirFimDeJogo(tentativas, recorde);
+     }
+     else Jogo2Players(tabuleiro, linhas, colunas, 0, 0);
 }
 
 void GerarParesAleatorios(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas){
@@ -533,12 +676,25 @@ void ExibirFimDeJogo(uint8_t numeroDeTentativasDaRodada, uint8_t recorde){
 
 	while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) && HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) && HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) && HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12));
 	ST7789_Fill_Color(BLACK);
-
-
 }
 
+void FimDeJogoDoisJogadores(uint8_t scorePlayer1, uint8_t scorePlayer2){
+	ST7789_Fill_Color(BLACK);
+	ST7789_WriteString(20, 20, "Fim de Jogo!", Font_11x18, WHITE, BLACK);
+	if(scorePlayer1 == scorePlayer2) ST7789_WriteString(20, 50, "Empate", Font_11x18, WHITE, BLACK);
+	ST7789_WriteString(20, 50, "Parabens!", Font_11x18, WHITE, BLACK);
+	if(scorePlayer1 != scorePlayer2) ST7789_WriteString(20, 80, (scorePlayer1>scorePlayer2) ? "Vitoria Player1" : "Vitoria Player2", Font_11x18, (scorePlayer1>scorePlayer2) ? BLUE : YELLOW, BLACK);
+
+	ST7789_WriteString(20, 120, "Aperte qualquer", Font_11x18, WHITE, BLACK);
+	ST7789_WriteString(80, 138, "botao", Font_11x18, WHITE, BLACK);
+	ST7789_WriteString(30, 156, "para reiniciar", Font_11x18, WHITE, BLACK);
+
+	while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) && HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) && HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) && HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12));
+	ST7789_Fill_Color(BLACK);
+}
 
 void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAtual, uint8_t colunaAtual){
+	ST7789_Fill_Color(BLACK);
 	for(;;){
 		uint8_t totalDeCartasSelecionadas = 0, acertos = 0, posicoesCartasSelecionadas[2][2];
 		for(int i = 0; i < linhas; i++){
@@ -589,7 +745,8 @@ void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAt
 	}
 }
 
-void Jogoteste(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAtual, uint8_t colunaAtual){
+void Jogo2Players(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAtual, uint8_t colunaAtual){
+	ST7789_Fill_Color(BLACK);
 	for(;;){
 		uint8_t totalDeCartasSelecionadas = 0, acertosJogador1 = 0, acertosJogador2 = 0, posicoesCartasSelecionadas[2][2], jogadorAtual = 0;
 		for(int i = 0; i < linhas; i++){
@@ -638,6 +795,7 @@ void Jogoteste(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t li
 				}
 			}
 		}
+		FimDeJogoDoisJogadores(acertosJogador1, acertosJogador2);
 		break;
 	}
 }
