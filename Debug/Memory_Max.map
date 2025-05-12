@@ -3179,34 +3179,34 @@ OUTPUT(Memory_Max.elf elf32-littlearm)
  .debug_line    0x0000000000005585      0x8e0 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.o
  .debug_line    0x0000000000005e65     0x100f Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.o
 
-.debug_str      0x0000000000000000    0x82b57
+.debug_str      0x0000000000000000    0x82b93
  .debug_str     0x0000000000000000     0x3ae8 Core/Src/ST7789/fonts.o
                                        0x3c5e (size before relaxing)
- .debug_str     0x0000000000003ae8    0x78f76 Core/Src/ST7789/st7789.o
-                                      0x7cddc (size before relaxing)
- .debug_str     0x000000000007ca5e       0x72 Core/Src/jogo.o
+ .debug_str     0x0000000000003ae8    0x78fb2 Core/Src/ST7789/st7789.o
+                                      0x7cddb (size before relaxing)
+ .debug_str     0x000000000007ca9a       0x72 Core/Src/jogo.o
                                       0x7cb66 (size before relaxing)
- .debug_str     0x000000000007cad0     0x46be Core/Src/main.o
-                                      0x812b0 (size before relaxing)
- .debug_str     0x000000000008118e       0x81 Core/Src/stm32f1xx_hal_msp.o
+ .debug_str     0x000000000007cb0c     0x46be Core/Src/main.o
+                                      0x812af (size before relaxing)
+ .debug_str     0x00000000000811ca       0x81 Core/Src/stm32f1xx_hal_msp.o
                                       0x7c4ad (size before relaxing)
- .debug_str     0x000000000008120f       0xbd Core/Src/stm32f1xx_it.o
+ .debug_str     0x000000000008124b       0xbd Core/Src/stm32f1xx_it.o
                                       0x7c09f (size before relaxing)
- .debug_str     0x00000000000812cc      0x4e9 Core/Src/sysmem.o
+ .debug_str     0x0000000000081308      0x4e9 Core/Src/sysmem.o
                                        0x5f43 (size before relaxing)
- .debug_str     0x00000000000817b5       0x52 Core/Src/system_stm32f1xx.o
+ .debug_str     0x00000000000817f1       0x52 Core/Src/system_stm32f1xx.o
                                       0x7bfd4 (size before relaxing)
- .debug_str     0x0000000000081807       0x36 Core/Startup/startup_stm32f103c8tx.o
+ .debug_str     0x0000000000081843       0x36 Core/Startup/startup_stm32f103c8tx.o
                                          0x73 (size before relaxing)
- .debug_str     0x000000000008183d      0x55e Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.o
+ .debug_str     0x0000000000081879      0x55e Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.o
                                       0x7c665 (size before relaxing)
- .debug_str     0x0000000000081d9b      0x300 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.o
+ .debug_str     0x0000000000081dd7      0x300 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.o
                                       0x7c66d (size before relaxing)
- .debug_str     0x000000000008209b      0x31f Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.o
+ .debug_str     0x00000000000820d7      0x31f Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.o
                                       0x7c398 (size before relaxing)
- .debug_str     0x00000000000823ba      0x24f Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.o
+ .debug_str     0x00000000000823f6      0x24f Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.o
                                       0x7c3d1 (size before relaxing)
- .debug_str     0x0000000000082609      0x54e Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.o
+ .debug_str     0x0000000000082645      0x54e Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.o
                                       0x7c8e0 (size before relaxing)
 
 .comment        0x0000000000000000       0x7b

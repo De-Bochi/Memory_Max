@@ -1,3 +1,5 @@
+Jogo da memória desenvolvido para um stm32 em linguagem c
+
 ETE FMC 34-DS 2025
 
 Professores:
