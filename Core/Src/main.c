@@ -303,7 +303,7 @@ uint16_t seta = WHITE;
 uint32_t last_tick = 0;
 bool menu = true;
 int x=5, y=79,z=30,p=42,P=42;
-short opcao=0,lugar=0;
+uint8_t opcao=0,lugar=0;
 
 void setar() {
 
@@ -821,7 +821,7 @@ void Jogo2Players(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t
 bool CursorEstaEmCartaSelecionada(uint8_t linha, uint8_t coluna, uint8_t posicoes[2][2], uint8_t totalSelecionadas) {
 	if (totalSelecionadas == 0) return false;
 
-	for (int i = 0; i < totalSelecionadas && i < 2; i++) {
+	for (int i = 0; i < 2; i++) {
 		if (linha == posicoes[i][0] && coluna == posicoes[i][1]) {
 			return true;
 		}
