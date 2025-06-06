@@ -31,7 +31,7 @@ O jogo termina quando todos os pares forem encontrados.
 ### Integrantes do grupo:
 - [Felipe Cunha](https://github.com/De-Bochi)
 - [Gabriel Machado](https://github.com/MachadoDias)
-- [Guilherme Vilas Boas](https://github.com/ALGG-ETEFMC/Lint-89)
+- [Guilherme Vilas Boas](https://github.com/Lint-89)
 
 ## 📷 Imagens do Projeto
 ![Memory Max Demo](https://github.com/user-attachments/assets/c748918d-05d0-456c-a881-15bbadd81ba9)   
