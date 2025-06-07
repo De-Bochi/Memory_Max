@@ -303,14 +303,14 @@ uint16_t seta = WHITE;
 uint32_t last_tick = 0;
 bool menu = true;
 int x=5, y=79,z=30,p=42,P=42;
-uint8_t opcao=0,lugar=0;
+uint8_t opcao=0,tela=0;
 
 void setar() {
 
-		if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) == 0 && lugar!=2){
+		if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) == 0 && tela!=2){
 			ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, BLACK);
 			ST7789_DrawFilledRectangle(x, y-3, 25 , 6, BLACK);
-			if(lugar==0){
+			if(tela==0){
 			switch(opcao){
 					case 0:
 					ST7789_Fill_Color(BLACK);
@@ -321,11 +321,11 @@ void setar() {
 					if(p==152) x+=115;
 					opcao=0;
 					z=80;
-					lugar=1;
+					tela=1;
 					break;
 					case 2:
 				    ST7789_Fill_Color(BLACK);
-					lugar=2;
+					tela=2;
 					opcao=0;
 				   break;
 			 }
@@ -356,13 +356,13 @@ void setar() {
 			}
 			}
 			}
-		else if(((HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12) == 0)&& opcao>0)&&lugar!=2){
-					if(p==42 &&lugar==1){
+		else if(((HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12) == 0)&& opcao>0)&&tela!=2){
+					if(p==42 &&tela==1){
 						ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, BLACK);
 						ST7789_DrawFilledRectangle(x, y-3, 25 , 6, BLACK);
 						x=5;
 					}
-					else if(p!=42&&lugar==1) {
+					else if(p!=42&&tela==1) {
 						ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, BLACK);
 						ST7789_DrawFilledRectangle(x, y-3, 25 , 6, BLACK);
 						x=120;
@@ -377,13 +377,13 @@ void setar() {
 		    		opcao--;
 		    		HAL_Delay(100);
 		    	}
-			else if(((HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == 0)&& opcao<2&&lugar==0||(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == 0)&&lugar==1&&opcao<1)&&lugar!=2){
-				 	if(P==42 &&lugar==1){
+			else if(((HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == 0)&& opcao<2&&tela==0||(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == 0)&&tela==1&&opcao<1)&&tela!=2){
+				 	if(P==42 &&tela==1){
 				 		ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, BLACK);
 				 		ST7789_DrawFilledRectangle(x, y-3, 25 , 6, BLACK);
 				 		x=5;
 				 	}
-				 	else if(P!=42&&lugar==1){
+				 	else if(P!=42&&tela==1){
 				 		ST7789_DrawFilledTriangle(x+18, y-6, x+20, y+6, x+30, y, BLACK);
 				 		ST7789_DrawFilledRectangle(x, y-3, 25 , 6, BLACK);
 				 		x=120;
@@ -398,16 +398,16 @@ void setar() {
 					opcao++;
 					HAL_Delay(100);
 			}
-			else if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == 0&&lugar>0){
+			else if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == 0&&tela>0){
 
 			    ST7789_Fill_Color(BLACK);
 			    opcao=0;
 			    x=5;
 			    y=79;
 			    z=30;
-			    lugar=0;
+			    tela=0;
 			}
-			if(lugar!=2){
+			if(tela!=2){
 		if ((HAL_GetTick()-last_tick)>500){
 			if(seta==WHITE)
 				{
@@ -546,13 +546,13 @@ void IniciarJogo () {
 		ST7789_WriteString(88,30, "Game", Font_16x26, WHITE, BLACK);
 	    ST7789_DrawFilledRectangle(5, 43, 70, 6, WHITE);
 	    ST7789_DrawFilledRectangle(165, 43, 70 , 6, WHITE);
-	    if (lugar==0){
+	    if (tela==0){
 	    	ST7789_WriteString(40,70, "Iniciar jogo", Font_11x18, WHITE, BLACK);
 	    	ST7789_WriteString(40,100, "Configuracoes", Font_11x18, WHITE, BLACK);
 	    	ST7789_WriteString(40,130, "Recordes", Font_11x18, WHITE, BLACK);
 
 	    }
-	    else if(lugar==1){
+	    else if(tela==1){
 	    	ST7789_WriteString(0,70, "Tamanho do tabuleiro", Font_11x18, WHITE, BLACK);
 	    	ST7789_DrawRectangle(40, 100, 60, 120, WHITE);
 	    	ST7789_DrawRectangle(150, 100, 170,120, WHITE);
@@ -566,7 +566,7 @@ void IniciarJogo () {
 	    	ST7789_WriteString(65,181, "1", Font_11x18, WHITE, BLACK);
 	    	ST7789_WriteString(175,181, "2", Font_11x18, WHITE, BLACK);
 	     }
-		 else if(lugar==2){
+		 else if(tela==2){
 			ST7789_WriteString(60,80, "Recordes", Font_16x26, WHITE, BLACK);
             if(recorde==255){
 				ST7789_WriteString(40,140, "Nenhum recorde", Font_11x18, WHITE, BLACK);
@@ -713,109 +713,103 @@ void FimDeJogoDoisJogadores(uint8_t scorePlayer1, uint8_t scorePlayer2){
 
 void Jogo(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAtual, uint8_t colunaAtual){
 	ST7789_Fill_Color(BLACK);
-	for(;;){
-		uint8_t totalDeCartasSelecionadas = 0, acertos = 0, posicoesCartasSelecionadas[2][2];
-		for(int i = 0; i < linhas; i++){
-			for(int j = 0; j < colunas; j++){
-				SelecionarCarta(tabuleiro, i, j, linhas, colunas);
-			}
+	uint8_t totalDeCartasSelecionadas = 0, acertos = 0, posicoesCartasSelecionadas[2][2];
+	for(int i = 0; i < linhas; i++){
+		for(int j = 0; j < colunas; j++){
+			SelecionarCarta(tabuleiro, i, j, linhas, colunas);
 		}
-		HAL_Delay(1500);
-		VirarTodasCartas(linhas, colunas);
-		uint8_t ultimaPosicao[2] = {100, 100}, ultimaPosicaoCursor[2] = {100,100};
-		while(!VerificaFimDeJogo(acertos, linhas, colunas)){
-			NavegadorCursor(tabuleiro, &linhaAtual, &colunaAtual, linhas, colunas);
-			if (!CursorEstaEmCartaSelecionada(linhaAtual, colunaAtual, posicoesCartasSelecionadas, totalDeCartasSelecionadas) && (ultimaPosicaoCursor[0] != linhaAtual || ultimaPosicaoCursor[1] != colunaAtual)) {
-				if (ultimaPosicaoCursor[0] < linhas && ultimaPosicaoCursor[1] < colunas && tabuleiro[ultimaPosicaoCursor[0]][ultimaPosicaoCursor[1]] != '0' && !CursorEstaEmCartaSelecionada(ultimaPosicaoCursor[0], ultimaPosicaoCursor[1], posicoesCartasSelecionadas, totalDeCartasSelecionadas)) {
-					ST7789_DrawImage(240 / colunas * ultimaPosicaoCursor[1], 240 / linhas * ultimaPosicaoCursor[0], 50, 50, (const uint16_t *)fundocarta);
-				}
-				ST7789_DrawFilledCircle(240/colunas * colunaAtual + 25, 240/linhas * linhaAtual + 25, 20, BLUE);
-				ultimaPosicaoCursor[0] = linhaAtual;
-				ultimaPosicaoCursor[1] = colunaAtual;
+	}
+	HAL_Delay(1500);
+	VirarTodasCartas(linhas, colunas);
+	uint8_t ultimaPosicao[2] = {100, 100}, ultimaPosicaoCursor[2] = {100,100};
+	while(!VerificaFimDeJogo(acertos, linhas, colunas)){
+		NavegadorCursor(tabuleiro, &linhaAtual, &colunaAtual, linhas, colunas);
+		if (!CursorEstaEmCartaSelecionada(linhaAtual, colunaAtual, posicoesCartasSelecionadas, totalDeCartasSelecionadas) && (ultimaPosicaoCursor[0] != linhaAtual || ultimaPosicaoCursor[1] != colunaAtual)) {
+			if (ultimaPosicaoCursor[0] < linhas && ultimaPosicaoCursor[1] < colunas && tabuleiro[ultimaPosicaoCursor[0]][ultimaPosicaoCursor[1]] != '0' && !CursorEstaEmCartaSelecionada(ultimaPosicaoCursor[0], ultimaPosicaoCursor[1], posicoesCartasSelecionadas, totalDeCartasSelecionadas)) {
+				ST7789_DrawImage(240 / colunas * ultimaPosicaoCursor[1], 240 / linhas * ultimaPosicaoCursor[0], 50, 50, (const uint16_t *)fundocarta);
 			}
-			if(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12) && (linhaAtual != ultimaPosicao[0] || colunaAtual != ultimaPosicao[1])){
-				SelecionarCarta(tabuleiro, linhaAtual, colunaAtual, linhas, colunas);
-				posicoesCartasSelecionadas[totalDeCartasSelecionadas%2][0] = linhaAtual;
-				posicoesCartasSelecionadas[totalDeCartasSelecionadas%2][1] = colunaAtual;
-				totalDeCartasSelecionadas++;
-				ultimaPosicao[0] = linhaAtual;
-				ultimaPosicao[1] = colunaAtual;
-				if(totalDeCartasSelecionadas % 2 == 0){
-					AtualizarTentativas(&tentativas);
-					char carta1 = tabuleiro[posicoesCartasSelecionadas[0][0]][posicoesCartasSelecionadas[0][1]];
-					char carta2 = tabuleiro[posicoesCartasSelecionadas[1][0]][posicoesCartasSelecionadas[1][1]];
-					if(CompararPares(carta1, carta2)){
-						acertos++;
-						tabuleiro[posicoesCartasSelecionadas[0][0]][posicoesCartasSelecionadas[0][1]] = '0';
-						tabuleiro[posicoesCartasSelecionadas[1][0]][posicoesCartasSelecionadas[1][1]] = '0';
-					}
-					else{
-						HAL_Delay(1000);
-						ST7789_DrawImage(240/colunas*posicoesCartasSelecionadas[0][1], 240/linhas*posicoesCartasSelecionadas[0][0], 50, 50, (const uint16_t *)fundocarta);
-						ST7789_DrawImage(240/colunas*posicoesCartasSelecionadas[1][1], 240/linhas*posicoesCartasSelecionadas[1][0], 50, 50, (const uint16_t *)fundocarta);
-						ultimaPosicao[0] = 100;
-						ultimaPosicao[1] = 100;
-					}
+			ST7789_DrawFilledCircle(240/colunas * colunaAtual + 25, 240/linhas * linhaAtual + 25, 20, BLUE);
+			ultimaPosicaoCursor[0] = linhaAtual;
+			ultimaPosicaoCursor[1] = colunaAtual;
+		}
+		if(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12) && (linhaAtual != ultimaPosicao[0] || colunaAtual != ultimaPosicao[1])){
+			SelecionarCarta(tabuleiro, linhaAtual, colunaAtual, linhas, colunas);
+			posicoesCartasSelecionadas[totalDeCartasSelecionadas%2][0] = linhaAtual;
+			posicoesCartasSelecionadas[totalDeCartasSelecionadas%2][1] = colunaAtual;
+			totalDeCartasSelecionadas++;
+			ultimaPosicao[0] = linhaAtual;
+			ultimaPosicao[1] = colunaAtual;
+			if(totalDeCartasSelecionadas % 2 == 0){
+				AtualizarTentativas(&tentativas);
+				char carta1 = tabuleiro[posicoesCartasSelecionadas[0][0]][posicoesCartasSelecionadas[0][1]];
+				char carta2 = tabuleiro[posicoesCartasSelecionadas[1][0]][posicoesCartasSelecionadas[1][1]];
+				if(CompararPares(carta1, carta2)){
+					acertos++;
+					tabuleiro[posicoesCartasSelecionadas[0][0]][posicoesCartasSelecionadas[0][1]] = '0';
+					tabuleiro[posicoesCartasSelecionadas[1][0]][posicoesCartasSelecionadas[1][1]] = '0';
+				}
+				else{
+					HAL_Delay(1000);
+					ST7789_DrawImage(240/colunas*posicoesCartasSelecionadas[0][1], 240/linhas*posicoesCartasSelecionadas[0][0], 50, 50, (const uint16_t *)fundocarta);
+					ST7789_DrawImage(240/colunas*posicoesCartasSelecionadas[1][1], 240/linhas*posicoesCartasSelecionadas[1][0], 50, 50, (const uint16_t *)fundocarta);
+					ultimaPosicao[0] = 100;
+					ultimaPosicao[1] = 100;
 				}
 			}
 		}
-		break;
 	}
 }
 
 void Jogo2Players(char tabuleiro[4][4], uint8_t linhas, uint8_t colunas, uint8_t linhaAtual, uint8_t colunaAtual){
 	ST7789_Fill_Color(BLACK);
-	for(;;){
-		uint8_t totalDeCartasSelecionadas = 0, acertosJogador1 = 0, acertosJogador2 = 0, posicoesCartasSelecionadas[2][2], jogadorAtual = 0;
-		for(int i = 0; i < linhas; i++){
-			for(int j = 0; j < colunas; j++){
-				SelecionarCarta(tabuleiro, i, j, linhas, colunas);
-			}
+	uint8_t totalDeCartasSelecionadas = 0, acertosJogador1 = 0, acertosJogador2 = 0, posicoesCartasSelecionadas[2][2], jogadorAtual = 0;
+	for(int i = 0; i < linhas; i++){
+		for(int j = 0; j < colunas; j++){
+			SelecionarCarta(tabuleiro, i, j, linhas, colunas);
 		}
-		HAL_Delay(1500);
-		VirarTodasCartas(linhas, colunas);
-		uint8_t ultimaPosicao[2] = {100, 100}, ultimaPosicaoCursor[2] = {100,100};
-		while(!VerificaFimDeJogo(acertosJogador1 + acertosJogador2, linhas, colunas)){
-			NavegadorCursor(tabuleiro, &linhaAtual, &colunaAtual, linhas, colunas);
-			if (!CursorEstaEmCartaSelecionada(linhaAtual, colunaAtual, posicoesCartasSelecionadas, totalDeCartasSelecionadas) && (ultimaPosicaoCursor[0] != linhaAtual || ultimaPosicaoCursor[1] != colunaAtual)) {
-				if (ultimaPosicaoCursor[0] < linhas && ultimaPosicaoCursor[1] < colunas && tabuleiro[ultimaPosicaoCursor[0]][ultimaPosicaoCursor[1]] != '0' && !CursorEstaEmCartaSelecionada(ultimaPosicaoCursor[0], ultimaPosicaoCursor[1], posicoesCartasSelecionadas, totalDeCartasSelecionadas)) {
-					ST7789_DrawImage(240 / colunas * ultimaPosicaoCursor[1], 240 / linhas * ultimaPosicaoCursor[0], 50, 50, (const uint16_t *)fundocarta);
-				}
-				ST7789_DrawFilledCircle(240/colunas * colunaAtual + 25, 240/linhas * linhaAtual + 25, 20, (jogadorAtual%2 == 0) ? BLUE : YELLOW);
-				ultimaPosicaoCursor[0] = linhaAtual;
-				ultimaPosicaoCursor[1] = colunaAtual;
-			}
-			if(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12) && (linhaAtual != ultimaPosicao[0] || colunaAtual != ultimaPosicao[1])){
-				SelecionarCarta(tabuleiro, linhaAtual, colunaAtual, linhas, colunas);
-				posicoesCartasSelecionadas[totalDeCartasSelecionadas%2][0] = linhaAtual;
-				posicoesCartasSelecionadas[totalDeCartasSelecionadas%2][1] = colunaAtual;
-				totalDeCartasSelecionadas++;
-				ultimaPosicao[0] = linhaAtual;
-				ultimaPosicao[1] = colunaAtual;
-				if(totalDeCartasSelecionadas % 2 == 0){
-					AtualizarTentativas(&tentativas);
-					char carta1 = tabuleiro[posicoesCartasSelecionadas[0][0]][posicoesCartasSelecionadas[0][1]];
-					char carta2 = tabuleiro[posicoesCartasSelecionadas[1][0]][posicoesCartasSelecionadas[1][1]];
-					if(CompararPares(carta1, carta2)){
-						if(jogadorAtual == 0) acertosJogador1++;
-						else acertosJogador2++;
-						tabuleiro[posicoesCartasSelecionadas[0][0]][posicoesCartasSelecionadas[0][1]] = '0';
-						tabuleiro[posicoesCartasSelecionadas[1][0]][posicoesCartasSelecionadas[1][1]] = '0';
-					}
-					else{
-						HAL_Delay(1000);
-						ST7789_DrawImage(240/colunas*posicoesCartasSelecionadas[0][1], 240/linhas*posicoesCartasSelecionadas[0][0], 50, 50, (const uint16_t *)fundocarta);
-						ST7789_DrawImage(240/colunas*posicoesCartasSelecionadas[1][1], 240/linhas*posicoesCartasSelecionadas[1][0], 50, 50, (const uint16_t *)fundocarta);
-						ultimaPosicao[0] = 100;
-						ultimaPosicao[1] = 100;
-					}
-					jogadorAtual = (jogadorAtual+1)%2;
-				}
-			}
-		}
-		FimDeJogoDoisJogadores(acertosJogador1, acertosJogador2);
-		break;
 	}
+	HAL_Delay(1500);
+	VirarTodasCartas(linhas, colunas);
+	uint8_t ultimaPosicao[2] = {100, 100}, ultimaPosicaoCursor[2] = {100,100};
+	while(!VerificaFimDeJogo(acertosJogador1 + acertosJogador2, linhas, colunas)){
+		NavegadorCursor(tabuleiro, &linhaAtual, &colunaAtual, linhas, colunas);
+		if (!CursorEstaEmCartaSelecionada(linhaAtual, colunaAtual, posicoesCartasSelecionadas, totalDeCartasSelecionadas) && (ultimaPosicaoCursor[0] != linhaAtual || ultimaPosicaoCursor[1] != colunaAtual)) {
+			if (ultimaPosicaoCursor[0] < linhas && ultimaPosicaoCursor[1] < colunas && tabuleiro[ultimaPosicaoCursor[0]][ultimaPosicaoCursor[1]] != '0' && !CursorEstaEmCartaSelecionada(ultimaPosicaoCursor[0], ultimaPosicaoCursor[1], posicoesCartasSelecionadas, totalDeCartasSelecionadas)) {
+				ST7789_DrawImage(240 / colunas * ultimaPosicaoCursor[1], 240 / linhas * ultimaPosicaoCursor[0], 50, 50, (const uint16_t *)fundocarta);
+			}
+			ST7789_DrawFilledCircle(240/colunas * colunaAtual + 25, 240/linhas * linhaAtual + 25, 20, (jogadorAtual%2 == 0) ? BLUE : YELLOW);
+			ultimaPosicaoCursor[0] = linhaAtual;
+			ultimaPosicaoCursor[1] = colunaAtual;
+		}
+		if(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12) && (linhaAtual != ultimaPosicao[0] || colunaAtual != ultimaPosicao[1])){
+			SelecionarCarta(tabuleiro, linhaAtual, colunaAtual, linhas, colunas);
+			posicoesCartasSelecionadas[totalDeCartasSelecionadas%2][0] = linhaAtual;
+			posicoesCartasSelecionadas[totalDeCartasSelecionadas%2][1] = colunaAtual;
+			totalDeCartasSelecionadas++;
+			ultimaPosicao[0] = linhaAtual;
+			ultimaPosicao[1] = colunaAtual;
+			if(totalDeCartasSelecionadas % 2 == 0){
+				AtualizarTentativas(&tentativas);
+				char carta1 = tabuleiro[posicoesCartasSelecionadas[0][0]][posicoesCartasSelecionadas[0][1]];
+				char carta2 = tabuleiro[posicoesCartasSelecionadas[1][0]][posicoesCartasSelecionadas[1][1]];
+				if(CompararPares(carta1, carta2)){
+					if(jogadorAtual == 0) acertosJogador1++;
+					else acertosJogador2++;
+					tabuleiro[posicoesCartasSelecionadas[0][0]][posicoesCartasSelecionadas[0][1]] = '0';
+					tabuleiro[posicoesCartasSelecionadas[1][0]][posicoesCartasSelecionadas[1][1]] = '0';
+				}
+				else{
+					HAL_Delay(1000);
+					ST7789_DrawImage(240/colunas*posicoesCartasSelecionadas[0][1], 240/linhas*posicoesCartasSelecionadas[0][0], 50, 50, (const uint16_t *)fundocarta);
+					ST7789_DrawImage(240/colunas*posicoesCartasSelecionadas[1][1], 240/linhas*posicoesCartasSelecionadas[1][0], 50, 50, (const uint16_t *)fundocarta);
+					ultimaPosicao[0] = 100;
+					ultimaPosicao[1] = 100;
+				}
+				jogadorAtual = (jogadorAtual+1)%2;
+			}
+		}
+	}
+	FimDeJogoDoisJogadores(acertosJogador1, acertosJogador2);
 }
 
 bool CursorEstaEmCartaSelecionada(uint8_t linha, uint8_t coluna, uint8_t posicoes[2][2], uint8_t totalSelecionadas) {
